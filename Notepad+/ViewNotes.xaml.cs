@@ -19,5 +19,10 @@ namespace Notepad_
         {
             InitializeComponent();
         }
+
+        private void AddNote_Click(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/AddNote.xaml", UriKind.Relative));
+        }
     }
 }

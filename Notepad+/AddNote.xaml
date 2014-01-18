@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="Notepad_.ViewNotes"
+    x:Class="Notepad_.AddNote"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -12,41 +12,48 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
+    
+    
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="400"/>
         </Grid.RowDefinitions>
 
-
-        <Grid.Background>
-            <ImageBrush ImageSource="/Notepad%2b;component/images/ViewNotesBackground.jpg" Stretch="Fill" />
-        </Grid.Background>
+        <!--<Grid.Background>
+            <ImageBrush ImageSource="/Notepad%2b;component/images/AddNoteBackground.jpg" />
+        </Grid.Background>-->
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Height="70" VerticalAlignment="Top">
+        <StackPanel x:Name="TitlePanel" VerticalAlignment="Top">
             <Grid Height="70" Background="#FFB79544">
-                <TextBlock Height="40" Name="tbHeader" Text="Notepad+" Foreground="#FFA11800" Margin="153,8,85,6" FontSize="26" FontWeight="Bold" IsHitTestVisible="True" OpacityMask="Black" UseLayoutRounding="True" />
+                <TextBox Height="72" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="-2,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" />
             </Grid>
         </StackPanel>
+        
+
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Margin="0,6,0,39" Grid.Row="1">
-            
-        </Grid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <!--<Grid x:Name="ContentPanel"  Margin="12,0,0,0">-->
+        <TextBox Height="Auto" HorizontalAlignment="Left" Margin="0,6,0,0" Name="txtNoteContent" Text="TextBox" VerticalAlignment="Top" Width="462" Background="#FFFFEEB8" BorderBrush="#FFFFEEB8" GotFocus="txtNoteContent_GotFocus" Padding="0" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" MaxHeight="390"></TextBox>
+            <!--</Grid>-->
+        </ScrollViewer>
+
+
+
 
     </Grid>
-
+ 
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FFB79544">
-            <shell:ApplicationBarIconButton IconUri="images/AddNote.png" Text="add note" Click="AddNote_Click"/>
-            <shell:ApplicationBarIconButton IconUri="images/Settings.png" Text="settings"/>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="rate this app"/>
-                <shell:ApplicationBarMenuItem Text="more apps"/>
-                <shell:ApplicationBarMenuItem Text="about"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
