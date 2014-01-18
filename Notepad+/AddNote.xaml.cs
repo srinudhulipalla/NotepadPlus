@@ -52,7 +52,7 @@ namespace Notepad_
 
         private void txtNoteTitle_GotFocus(object sender, RoutedEventArgs e)
         {
-            txtNoteTitle.Background = new SolidColorBrush(Color.FromArgb(255, 255, 238, 184));
+            txtNoteTitle.Background = new SolidColorBrush(Color.FromArgb(0, 255, 183, 149));
             txtNoteTitle.BorderThickness = new Thickness(0, 0, 0, 0);
         }
 
