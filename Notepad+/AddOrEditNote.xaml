@@ -113,7 +113,11 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" VerticalAlignment="Top">
             <Grid Height="70" Background="#FFB79544">
-                <TextBox Height="72" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="-2,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="Bold" Foreground="#FFA11800" />
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                    <Image Height="50" Source="/Notepad%2b;component/images/Pin.png">
+                    </Image>
+                    <TextBox Height="70" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="0,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="Bold" Foreground="#FFA11800" Width="367" />
+                </StackPanel>
             </Grid>
         </StackPanel>
 
@@ -134,7 +138,7 @@
             <shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="reminder" Click="CancelNote_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="email this note"/>
-                <shell:ApplicationBarMenuItem Text="pin to start"/>                
+                <shell:ApplicationBarMenuItem Text="pin to start"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

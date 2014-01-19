@@ -114,7 +114,9 @@
     <Resource Include="images\AddNoteBackground.jpg" />
     <Content Include="images\Cancel.png" />
     <Content Include="images\Delete.png" />
+    <Resource Include="images\Pin.png" />
     <Content Include="images\Reminder.png" />
+    <Resource Include="images\ReminderClock.png" />
     <Content Include="images\Save.png" />
     <Content Include="images\Settings.png" />
     <Content Include="SplashScreenImage.jpg" />

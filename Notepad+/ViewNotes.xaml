@@ -12,18 +12,22 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
-    
+
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="ListBoxItemTemplate">
-            <StackPanel Margin="0,0,0,15">
-                <TextBlock Text="{Binding Title}" Foreground="Black"></TextBlock>
-                <TextBlock Text="{Binding Created}" Foreground="Black"></TextBlock>
-                <!--<TextBlock Name="na2" Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}"></TextBlock>-->
-            </StackPanel>
-        </DataTemplate>
-        <FontStyle x:Key="myfont">
-            
-        </FontStyle>
+            <Border BorderThickness="0,0,0,1" BorderBrush="#FFB79544" Width="500">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Notepad%2b;component/images/Pin.png">
+                    </Image>
+                    <StackPanel Margin="5,10,0,0" Width="350">
+                        <TextBlock Text="{Binding Title}" Foreground="#FFA11800" FontSize="20"></TextBlock>
+                        <TextBlock Text="{Binding Created}" Foreground="Gray" FontStyle="Italic" FontSize="15"></TextBlock>
+                    </StackPanel>
+                    <Image Source="/Notepad%2b;component/images/ReminderClock.png">
+                    </Image>
+                </StackPanel>
+            </Border>
+        </DataTemplate>        
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -53,8 +57,9 @@
                      ItemTemplate="{StaticResource ListBoxItemTemplate}"
                      VerticalAlignment="Top" 
                      Width="460"
-                     SelectionChanged="lstNotes_SelectionChanged" FontFamily="Comic Sans MS" />
-            
+                     SelectionChanged="lstNotes_SelectionChanged" FontFamily="Comic Sans MS">
+            </ListBox>
+
         </Grid>
 
     </Grid>
