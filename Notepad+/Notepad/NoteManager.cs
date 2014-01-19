@@ -33,23 +33,15 @@ namespace NotepadPlus.Notes
         {
             bool success = false;
 
-            if (string.IsNullOrEmpty(note.Id)) return success;
+            try
+            {
+                if (string.IsNullOrEmpty(note.Id)) return success;
 
-            if (settings.Contains(note.Id))
-            {
-                if (!settings[note.Id].Equals(note))
-                {
-                    settings[note.Id] = note;
-                    settings.Save();
-                    success = true;
-                }
-            }
-            else
-            {
-                settings.Add(note.Id, note);
+                settings[note.Id] = note;
                 settings.Save();
                 success = true;
             }
+            catch { success = false; }
 
             return success;
         }

@@ -62,6 +62,12 @@ namespace NotepadPlus
         {
             Note note = null;
 
+            if (string.IsNullOrEmpty(txtNoteTitle.Text.Trim()))
+            {
+                MessageBox.Show(NotepadSettings.EmptyNoteTitle, "Warning!", MessageBoxButton.OK);
+                return;
+            }
+
             if (string.IsNullOrEmpty(this.NoteId))
             {
                 note = new Note()

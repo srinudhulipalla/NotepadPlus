@@ -15,7 +15,7 @@
 
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="ListBoxItemTemplate">
-            <Border BorderThickness="0,0,0,1" BorderBrush="#FFB79544" Width="500">
+            <Border BorderThickness="0,0,0,1" BorderBrush="Green" Width="500">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Notepad%2b;component/images/Pin.png">
                     </Image>
@@ -49,17 +49,19 @@
             </Grid>
         </StackPanel>
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Margin="0,6,0,39" Grid.Row="1">
+        <Grid x:Name="ContentPanel" Margin="0,6,0,15" Grid.Row="1">
+            <ScrollViewer>
             <ListBox HorizontalAlignment="Left" 
                      Margin="10,10,0,0" 
                      Name="lstNotes" 
                      ItemsSource="{Binding Notes}"
                      ItemTemplate="{StaticResource ListBoxItemTemplate}"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      VerticalAlignment="Top" 
                      Width="460"
                      SelectionChanged="lstNotes_SelectionChanged" FontFamily="Comic Sans MS">
             </ListBox>
-
+</ScrollViewer>
         </Grid>
 
     </Grid>
@@ -69,6 +71,7 @@
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FFB79544">
             <shell:ApplicationBarIconButton IconUri="images/Add.png" Text="add note" Click="AddNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Settings.png" Text="settings"/>
+            <shell:ApplicationBarIconButton IconUri="images/PinToStart.png" Text="pin to start"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="rate this app"/>
                 <shell:ApplicationBarMenuItem Text="more apps"/>

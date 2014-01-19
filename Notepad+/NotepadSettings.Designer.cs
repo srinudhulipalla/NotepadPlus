@@ -79,6 +79,15 @@ namespace NotepadPlus {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Note title can&apos;t be empty..
+        /// </summary>
+        internal static string EmptyNoteTitle {
+            get {
+                return ResourceManager.GetString("EmptyNoteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to save the note. Please try again..
         /// </summary>
         internal static string NoteSaveFailure {

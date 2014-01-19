@@ -115,6 +115,7 @@
     <Content Include="images\Cancel.png" />
     <Content Include="images\Delete.png" />
     <Resource Include="images\Pin.png" />
+    <Content Include="images\PinToStart.png" />
     <Content Include="images\Reminder.png" />
     <Resource Include="images\ReminderClock.png" />
     <Content Include="images\Save.png" />

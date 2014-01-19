@@ -123,6 +123,9 @@
   <data name="DeleteNoteFailure" xml:space="preserve">
     <value>Unable to delete the note. Please try again.</value>
   </data>
+  <data name="EmptyNoteTitle" xml:space="preserve">
+    <value>Note title can't be empty.</value>
+  </data>
   <data name="NoteSaveFailure" xml:space="preserve">
     <value>Unable to save the note. Please try again.</value>
   </data>
