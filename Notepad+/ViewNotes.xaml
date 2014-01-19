@@ -21,10 +21,13 @@
                 <!--<TextBlock Name="na2" Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}"></TextBlock>-->
             </StackPanel>
         </DataTemplate>
+        <FontStyle x:Key="myfont">
+            
+        </FontStyle>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" DataContext="{Binding}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -50,7 +53,7 @@
                      ItemTemplate="{StaticResource ListBoxItemTemplate}"
                      VerticalAlignment="Top" 
                      Width="460"
-                     SelectionChanged="lstNotes_SelectionChanged" />
+                     SelectionChanged="lstNotes_SelectionChanged" FontFamily="Comic Sans MS" />
             
         </Grid>
 
@@ -59,7 +62,7 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FFB79544">
-            <shell:ApplicationBarIconButton IconUri="images/AddNote.png" Text="add note" Click="AddNote_Click"/>
+            <shell:ApplicationBarIconButton IconUri="images/Add.png" Text="add note" Click="AddNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Settings.png" Text="settings"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="rate this app"/>

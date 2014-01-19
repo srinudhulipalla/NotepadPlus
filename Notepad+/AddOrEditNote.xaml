@@ -113,7 +113,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" VerticalAlignment="Top">
             <Grid Height="70" Background="#FFB79544">
-                <TextBox Height="72" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="-2,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontWeight="Bold" Foreground="#FFA11800" />
+                <TextBox Height="72" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="-2,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="Bold" Foreground="#FFA11800" />
             </Grid>
         </StackPanel>
 
@@ -121,19 +121,20 @@
         <!--ContentPanel - place additional content here-->
         <TextBox Name="txtNoteContent" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource TextBoxStyle1}"
                  Background="#FFFFEEB8" BorderBrush="#FFFFEEB8" 
-                 GotFocus="txtNoteContent_GotFocus" Height="614"/>
+                 GotFocus="txtNoteContent_GotFocus" Height="614" FontFamily="Comic Sans MS" />
 
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="save" Click="SaveNote_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="cancel" Click="CancelNote_Click"/>
+        <shell:ApplicationBar x:Name="appBar" IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FFB79544">
+            <shell:ApplicationBarIconButton IconUri="images/Save.png" Text="save" Click="SaveNote_Click"/>
+            <shell:ApplicationBarIconButton IconUri="images/Delete.png" Text="delete" IsEnabled="False" Click="DeleteNote_Click"/>
+            <shell:ApplicationBarIconButton IconUri="images/Cancel.png" Text="cancel" Click="CancelNote_Click"/>
+            <shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="reminder" Click="CancelNote_Click"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="rate this app"/>
-                <shell:ApplicationBarMenuItem Text="more apps"/>
-                <shell:ApplicationBarMenuItem Text="about"/>
+                <shell:ApplicationBarMenuItem Text="email this note"/>
+                <shell:ApplicationBarMenuItem Text="pin to start"/>                
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

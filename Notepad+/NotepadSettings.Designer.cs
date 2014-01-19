@@ -61,6 +61,24 @@ namespace NotepadPlus {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you wish to delete this note?.
+        /// </summary>
+        internal static string DeleteNoteConfirm {
+            get {
+                return ResourceManager.GetString("DeleteNoteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to delete the note. Please try again..
+        /// </summary>
+        internal static string DeleteNoteFailure {
+            get {
+                return ResourceManager.GetString("DeleteNoteFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to save the note. Please try again..
         /// </summary>
         internal static string NoteSaveFailure {

@@ -13,12 +13,15 @@ using Microsoft.Phone.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using NotepadPlus.Notes;
+using Microsoft.Phone.Shell;
 
 namespace NotepadPlus
 {
     public partial class AddOrEditNote : PhoneApplicationPage
     {
         private string NoteId = string.Empty;
+        private Note EditedNote = null;
+        NoteManager noteManager = new NoteManager();
 
         public AddOrEditNote()
         {
@@ -57,14 +60,27 @@ namespace NotepadPlus
 
         private void SaveNote_Click(object sender, EventArgs e)
         {
-            Note note = new Note()
+            Note note = null;
+
+            if (string.IsNullOrEmpty(this.NoteId))
             {
-                Id = string.IsNullOrEmpty(this.NoteId) ? Guid.NewGuid().ToString() : this.NoteId,
-                Title = txtNoteTitle.Text.Trim(),
-                Content = txtNoteContent.Text.Trim(),
-                Created = DateTime.Now,
-                Modified = DateTime.Now
-            };
+                note = new Note()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Title = txtNoteTitle.Text.Trim(),
+                    Content = txtNoteContent.Text.Trim(),
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now
+                };
+            }
+            else
+            {
+                note = this.EditedNote;
+
+                note.Title = txtNoteTitle.Text.Trim();
+                note.Content = txtNoteContent.Text.Trim();
+                note.Modified = DateTime.Now;
+            }            
 
             NoteManager noteManager = new NoteManager();
             bool success = noteManager.AddOrUpdateNote(note);
@@ -79,6 +95,25 @@ namespace NotepadPlus
             }
         }
 
+        private void DeleteNote_Click(object sender, EventArgs e)
+        {
+            MessageBoxResult confirm = MessageBox.Show(NotepadSettings.DeleteNoteConfirm, "Delete", MessageBoxButton.OKCancel);
+
+            if (confirm == MessageBoxResult.OK)
+            {
+                bool success = noteManager.DeleteNote(this.NoteId);
+
+                if (success)
+                {
+                    GotoNotesView();
+                }
+                else
+                {
+                    MessageBox.Show(NotepadSettings.DeleteNoteFailure, "Failure", MessageBoxButton.OK);
+                }
+            }
+        }
+
         private void CancelNote_Click(object sender, EventArgs e)
         {
             GotoNotesView();
@@ -88,16 +123,19 @@ namespace NotepadPlus
         {            
             base.OnNavigatedTo(e);
 
+            object obj = ApplicationBar.Buttons[0];
+
             if (this.NavigationContext.QueryString.ContainsKey("noteId"))
-            {
-                this.NoteId = this.NavigationContext.QueryString["noteId"];
-                NoteManager noteManager = new NoteManager();
-                Note note = noteManager.GetNote(this.NoteId);
+            {           
+                this.NoteId = this.NavigationContext.QueryString["noteId"];                
+                this.EditedNote = noteManager.GetNote(this.NoteId);
 
-                if (note == null) return;
+                if (this.EditedNote == null) return;
 
-                txtNoteTitle.Text = note.Title;
-                txtNoteContent.Text = note.Content;
+                txtNoteTitle.Text = this.EditedNote.Title;
+                txtNoteContent.Text = this.EditedNote.Content;
+
+                (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = true;
             }
         }
         
