@@ -111,7 +111,6 @@
     </Content>
     <Resource Include="images\ViewNotesBackground.jpg" />
     <Content Include="images\Add.png" />
-    <Content Include="images\AddNote.png" />
     <Resource Include="images\AddNoteBackground.jpg" />
     <Content Include="images\Cancel.png" />
     <Content Include="images\Delete.png" />
