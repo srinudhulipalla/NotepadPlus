@@ -45,11 +45,12 @@
         <Grid x:Name="ContentPanel" Margin="0,6,0,39" Grid.Row="1">
             <ListBox HorizontalAlignment="Left" 
                      Margin="10,10,0,0" 
-                     Name="listBox1" 
+                     Name="lstNotes" 
                      ItemsSource="{Binding Notes}"
                      ItemTemplate="{StaticResource ListBoxItemTemplate}"
                      VerticalAlignment="Top" 
-                     Width="460" />
+                     Width="460"
+                     SelectionChanged="lstNotes_SelectionChanged" />
             
         </Grid>
 

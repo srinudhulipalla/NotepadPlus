@@ -40,14 +40,31 @@ namespace NotepadPlus
             this.Loaded += new RoutedEventHandler(ViewNotes_Loaded);
         }
 
+        void GotoAddOrEditNote(string noteId)
+        {
+            string uriString = "/AddOrEditNote.xaml" + (string.IsNullOrEmpty(noteId) ? string.Empty : "?noteId=" + noteId);
+            this.NavigationService.Navigate(new Uri(uriString, UriKind.Relative));
+        }
+
         void ViewNotes_Loaded(object sender, RoutedEventArgs e)
         {
-            tbHeader.Text += string.Format(" ({0})", this.NoteManager.Notes.Count);
+            tbHeader.Text = string.Format("Notepad+ ({0})", this.NoteManager.Notes.Count);
         }
 
         private void AddNote_Click(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/AddNote.xaml", UriKind.Relative));
+            GotoAddOrEditNote(string.Empty);
         }
+
+        private void lstNotes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Note note = ((ListBox)sender).SelectedItem as Note;
+            if (note == null) return;
+
+            GotoAddOrEditNote(note.Id);
+        }
+
+        
+
     }
 }
