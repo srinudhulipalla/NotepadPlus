@@ -11,7 +11,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls">
 
     <phone:PhoneApplicationPage.Resources>
         <Style x:Key="TextBoxStyle1" TargetType="TextBox">
@@ -126,7 +126,8 @@
         <TextBox Name="txtNoteContent" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource TextBoxStyle1}"
                  Background="#FFFFEEB8" BorderBrush="#FFFFEEB8" 
                  GotFocus="txtNoteContent_GotFocus" Height="614" FontFamily="Comic Sans MS" />
-
+               
+        
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
@@ -135,7 +136,7 @@
             <shell:ApplicationBarIconButton IconUri="images/Save.png" Text="save" Click="SaveNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Delete.png" Text="delete" IsEnabled="False" Click="DeleteNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Cancel.png" Text="cancel" Click="CancelNote_Click"/>
-            <shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="reminder" Click="CancelNote_Click"/>
+            <shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="reminder" Click="Reminder_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="email this note"/>
                 <shell:ApplicationBarMenuItem Text="pin to start"/>

@@ -17,6 +17,7 @@ namespace NotepadPlus.Notes
         private string _id = string.Empty;
         private string _title = string.Empty;
         private string _content = string.Empty;
+        private Visibility _hasReminder = Visibility.Collapsed;
         private DateTime _created;
         private DateTime _modified;        
 
@@ -64,6 +65,22 @@ namespace NotepadPlus.Notes
                 {
                     _content = value;
                     NotifyPropertyChanged("Content");
+                }
+            }
+        }
+
+        public Visibility HasReminder
+        {
+            get
+            {
+                return _hasReminder;
+            }
+            set
+            {
+                if (value != _hasReminder)
+                {
+                    _hasReminder = value;
+                    NotifyPropertyChanged("HasReminder");
                 }
             }
         }

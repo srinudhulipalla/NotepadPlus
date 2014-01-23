@@ -23,11 +23,11 @@
                         <TextBlock Text="{Binding Title}" Foreground="#FFA11800" FontSize="20"></TextBlock>
                         <TextBlock Text="{Binding Created}" Foreground="Gray" FontStyle="Italic" FontSize="15"></TextBlock>
                     </StackPanel>
-                    <Image Source="/Notepad%2b;component/images/ReminderClock.png">
+                    <Image Visibility="{Binding HasReminder}" Source="/Notepad%2b;component/images/ReminderClock.png">
                     </Image>
                 </StackPanel>
             </Border>
-        </DataTemplate>        
+        </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -51,7 +51,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Margin="0,6,0,15" Grid.Row="1">
             <ScrollViewer>
-            <ListBox HorizontalAlignment="Left" 
+                <ListBox HorizontalAlignment="Left" 
                      Margin="10,10,0,0" 
                      Name="lstNotes" 
                      ItemsSource="{Binding Notes}"
@@ -60,8 +60,8 @@
                      VerticalAlignment="Top" 
                      Width="460"
                      SelectionChanged="lstNotes_SelectionChanged" FontFamily="Comic Sans MS">
-            </ListBox>
-</ScrollViewer>
+                </ListBox>
+            </ScrollViewer>
         </Grid>
 
     </Grid>

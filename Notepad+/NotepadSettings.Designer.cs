@@ -61,7 +61,7 @@ namespace NotepadPlus {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you wish to delete this note?.
+        ///   Looks up a localized string similar to Are you sure you want to delete this note?.
         /// </summary>
         internal static string DeleteNoteConfirm {
             get {

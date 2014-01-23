@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using NotepadPlus.Notes;
 using Microsoft.Phone.Shell;
+using Coding4Fun.Toolkit.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace NotepadPlus
 {
@@ -23,19 +25,71 @@ namespace NotepadPlus
         private Note EditedNote = null;
         NoteManager noteManager = new NoteManager();
 
+        MessagePrompt msg = null;
+
+        NoteReminder _reminder = null;
+
+        NoteReminder Reminder
+        {
+            get
+            {
+                if (_reminder == null)
+                    _reminder = new NoteReminder();
+
+                return _reminder;
+            }
+        }
+
         public AddOrEditNote()
         {
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(AddNote_Loaded);
+
+            
+        }
+
+        void msg_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
+        {
+            this.Reminder.IsComplete = e.PopUpResult == PopUpResult.Ok;
         }
 
         void GotoNotesView()
         {
-            this.NavigationService.Navigate(new Uri("/ViewNotes.xaml", UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/ViewNotes.xaml", UriKind.Relative));            
+        }
+
+        void ShowDialog(string title, string message, bool showCancel)
+        {
+            var msgPrompt = new MessagePrompt()
+            {
+                Title = title,
+                Message = message,
+                IsCancelVisible = showCancel                
+            };
+
+            msgPrompt.Show();
         }
 
         void AddNote_Loaded(object sender, RoutedEventArgs e)
         {
+            if (msg == null)
+            {
+                msg = new MessagePrompt();
+                msg.Title = "Note Reminder";
+                msg.Body = this.Reminder;
+                msg.IsCancelVisible = true;
+                msg.Completed += new EventHandler<PopUpEventArgs<string, PopUpResult>>(msg_Completed);
+            }
+            else
+            {
+                if (this.Reminder.IsComplete == false)
+                {
+                    msg.Show();
+                }
+            }
+
+            
+
             txtNoteTitle.BorderBrush.Opacity = 0;            
             txtNoteContent.BorderBrush.Opacity = 0;
         }        
@@ -63,8 +117,8 @@ namespace NotepadPlus
             Note note = null;
 
             if (string.IsNullOrEmpty(txtNoteTitle.Text.Trim()))
-            {
-                MessageBox.Show(NotepadSettings.EmptyNoteTitle, "Warning!", MessageBoxButton.OK);
+            {                
+                ShowDialog("Warning!", NotepadSettings.EmptyNoteTitle, false);
                 return;
             }
 
@@ -97,15 +151,26 @@ namespace NotepadPlus
             }
             else
             {
-                MessageBox.Show(NotepadSettings.NoteSaveFailure, "Failure", MessageBoxButton.OK);
+                ShowDialog("Failure", NotepadSettings.NoteSaveFailure, false);
             }
         }
 
         private void DeleteNote_Click(object sender, EventArgs e)
         {
-            MessageBoxResult confirm = MessageBox.Show(NotepadSettings.DeleteNoteConfirm, "Delete", MessageBoxButton.OKCancel);
+            var DeleteNotePrompt = new MessagePrompt()
+            {
+                Title = "Delete",
+                Message = NotepadSettings.DeleteNoteConfirm,
+                IsCancelVisible = true                
+            };
 
-            if (confirm == MessageBoxResult.OK)
+            DeleteNotePrompt.Completed += new EventHandler<PopUpEventArgs<string, PopUpResult>>(DeleteNotePrompt_Completed);
+            DeleteNotePrompt.Show();
+        }
+
+        void DeleteNotePrompt_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
+        {
+            if (e.PopUpResult == PopUpResult.Ok)
             {
                 bool success = noteManager.DeleteNote(this.NoteId);
 
@@ -115,14 +180,48 @@ namespace NotepadPlus
                 }
                 else
                 {
-                    MessageBox.Show(NotepadSettings.DeleteNoteFailure, "Failure", MessageBoxButton.OK);
+                    ShowDialog("Failure", NotepadSettings.DeleteNoteFailure, false);                    
                 }
             }
         }
 
         private void CancelNote_Click(object sender, EventArgs e)
         {
-            GotoNotesView();
+            this.NavigationService.GoBack();
+        }
+
+        protected void Reminder_Click(object sender, EventArgs e)
+        {
+            //Microsoft.Phone.Scheduler.ScheduledActionService.
+            //inputPrompt1.Visibility = Visibility.Visible;
+
+            //NoteReminder nd = new NoteReminder();
+            //nd.top
+            //nd.Show();
+
+            //Popup popup = new Popup();
+            //popup.Height = 300;
+            //popup.Width = 400;
+            //popup.VerticalOffset = 100;
+            //NoteReminder control = new NoteReminder();
+            //popup.Child = control;
+            //popup.IsOpen = true;
+
+            //AboutPrompt p = new AboutPrompt();
+            //MessagePrompt p = new MessagePrompt(); p.IsOverlayApplied = true;
+            //p.Body = new NoteReminder();
+            msg.Show();
+
+            //control.btnOK.Click += (s, args) =>
+            //{
+            //    popup.IsOpen = false;
+            //    //this.text.Text = control.tbx.Text;
+            //};
+
+            //control.btnCancel.Click += (s, args) =>
+            //{
+            //    popup.IsOpen = false;
+            //};
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
