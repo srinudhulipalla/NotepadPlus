@@ -6,35 +6,21 @@
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="256" d:DesignWidth="512" xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
-    
-    <Grid x:Name="LayoutRoot" Height="241" Width="480">
-        <StackPanel x:Name="LayoutRoot1"  Width="480" Height="480">
-            <TextBlock Height="30" Name="textBlock1" Text="Select Date:" VerticalAlignment="Stretch" />
-            <toolkit:DatePicker Name="datePicker1" ValueStringFormat="{}{0:D}" Width="369" HorizontalAlignment="Left" />
-            <TextBlock Height="30" Name="textBlock2" Text="Select Time:" />
-            <toolkit:TimePicker Name="timePicker1" ValueStringFormat="{}{0:T}" HorizontalAlignment="Left" Width="363" />
-            
-            
-        </StackPanel>
-        
-        <!--<Border
-        Background="{StaticResource PhoneChromeBrush}"
+    Foreground="{StaticResource PhoneForegroundBrush}" xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" Height="356" Width="512">
+    <Border Background="{StaticResource PhoneChromeBrush}"
         BorderThickness="2"
         Margin="10"
         BorderBrush="{StaticResource PhoneAccentBrush}">
-
-            <StackPanel>
-
-                <toolkit:DatePicker
-                Tap="DatePickerTap" />
-
-                <toolkit:TimePicker
-                Tap="DatePickerTap" />
-
+        <Grid x:Name="LayoutRoot" Height="341" Width="480">
+            <StackPanel x:Name="LayoutRoot1"  Width="480" Height="480">
+                <toolkit:ToggleSwitch Name="ReminderOnOff" Content="Reminder" Width="375" HorizontalAlignment="Left" Checked="reminderOnOff_Checked" Unchecked="reminderOnOff_Unchecked" IsChecked="True"></toolkit:ToggleSwitch>
+                <TextBlock Height="30" Name="textBlock1" Text="  Date:" VerticalAlignment="Stretch" />
+                <toolkit:DatePicker Name="tkDate" ValueStringFormat="{}{0:D}" Width="375" HorizontalAlignment="Left" ValueChanged="tkDate_ValueChanged" />
+                <TextBlock Height="30" Name="textBlock2" Text="  Time:" />
+                <toolkit:TimePicker Name="tkTime" ValueStringFormat="{}{0:T}" HorizontalAlignment="Left" Width="375" ValueChanged="tkTime_ValueChanged" />
+                
+                
             </StackPanel>
-
-        </Border>-->
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

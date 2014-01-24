@@ -15,25 +15,39 @@ namespace NotepadPlus
 {
     public partial class NoteReminder : UserControl
     {
-
-        public bool IsComplete = false;
+        public bool IsReminderSet { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
 
         public NoteReminder()
         {
             InitializeComponent();
-            //http://www.geekchamp.com/tips/how-to-get-user-input-from-a-popup-in-windows-phone
-
             this.Loaded += new RoutedEventHandler(NoteReminder_Loaded);
-
-            
         }
 
         void NoteReminder_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-            
+        {    
         }
 
+        private void tkDate_ValueChanged(object sender, Microsoft.Phone.Controls.DateTimeValueChangedEventArgs e)
+        {
+            this.Date = e.NewDateTime.HasValue ? e.NewDateTime.Value : DateTime.Now;
+        }
+
+        private void tkTime_ValueChanged(object sender, Microsoft.Phone.Controls.DateTimeValueChangedEventArgs e)
+        {
+            this.Time = e.NewDateTime.HasValue ? e.NewDateTime.Value : DateTime.Now;
+        }
+
+        private void reminderOnOff_Checked(object sender, RoutedEventArgs e)
+        {
+            tkDate.IsEnabled = tkTime.IsEnabled = true;
+        }
+
+        private void reminderOnOff_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tkDate.IsEnabled = tkTime.IsEnabled = false;
+        }
         
     }
 }
