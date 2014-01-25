@@ -61,6 +61,24 @@ namespace NotepadPlus {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notepad+.
+        /// </summary>
+        internal static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Srinivasa Rao Dhulipalla.
+        /// </summary>
+        internal static string AppPublisher {
+            get {
+                return ResourceManager.GetString("AppPublisher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this note?.
         /// </summary>
         internal static string DeleteNoteConfirm {
@@ -84,6 +102,15 @@ namespace NotepadPlus {
         internal static string EmptyNoteTitle {
             get {
                 return ResourceManager.GetString("EmptyNoteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note Reminder.
+        /// </summary>
+        internal static string NoteReminderTitle {
+            get {
+                return ResourceManager.GetString("NoteReminderTitle", resourceCulture);
             }
         }
         

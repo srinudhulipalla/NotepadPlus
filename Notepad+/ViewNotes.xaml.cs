@@ -51,11 +51,6 @@ namespace NotepadPlus
             tbHeader.Text = string.Format("Notepad+ ({0})", this.NoteManager.Notes.Count);
         }
 
-        private void AddNote_Click(object sender, EventArgs e)
-        {
-            GotoAddOrEditNote(string.Empty);
-        }
-
         private void lstNotes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Note note = ((ListBox)sender).SelectedItem as Note;
@@ -64,7 +59,30 @@ namespace NotepadPlus
             GotoAddOrEditNote(note.Id);
         }
 
-        
+        private void AddNote_Click(object sender, EventArgs e)
+        {
+            GotoAddOrEditNote(string.Empty);
+        }
+
+        private void Settings_Click(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
+        }        
+
+        protected void RateApp_Click(object sender, EventArgs e)
+        {
+            Common.RateMyApp();
+        }
+
+        private void MoreApps_Click(object sender, EventArgs e)
+        {
+            Common.MoreAppsFromMe();
+        }
+
+        private void About_Click(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/About.xaml", UriKind.Relative));
+        }        
 
     }
 }

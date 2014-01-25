@@ -15,9 +15,33 @@ namespace NotepadPlus
 {
     public partial class NoteReminder : UserControl
     {
-        public bool IsReminderSet { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime Time { get; set; }
+        public bool IsReminderSet { get; set; } 
+
+        public DateTime Date
+        {
+            get 
+            {
+                return tkDate.Value.HasValue ? tkDate.Value.Value : DateTime.Today;
+            }
+            set { tkDate.Value = value; }
+        }
+
+        public DateTime Time
+        {
+            get
+            {
+                return tkTime.Value.HasValue ? tkTime.Value.Value : DateTime.Now; 
+            }
+            set { tkTime.Value = value; }            
+        }
+
+        public bool IsReminderEnabled
+        {
+            get
+            {
+                return reminderOnOff.IsChecked.HasValue ? reminderOnOff.IsChecked.Value : false;
+            }
+        }
 
         public NoteReminder()
         {
@@ -27,11 +51,12 @@ namespace NotepadPlus
 
         void NoteReminder_Loaded(object sender, RoutedEventArgs e)
         {    
+
         }
 
         private void tkDate_ValueChanged(object sender, Microsoft.Phone.Controls.DateTimeValueChangedEventArgs e)
         {
-            this.Date = e.NewDateTime.HasValue ? e.NewDateTime.Value : DateTime.Now;
+            this.Date = e.NewDateTime.HasValue ? e.NewDateTime.Value : DateTime.Today;
         }
 
         private void tkTime_ValueChanged(object sender, Microsoft.Phone.Controls.DateTimeValueChangedEventArgs e)
@@ -40,13 +65,15 @@ namespace NotepadPlus
         }
 
         private void reminderOnOff_Checked(object sender, RoutedEventArgs e)
-        {
-            tkDate.IsEnabled = tkTime.IsEnabled = true;
+        {            
+            spDateTime.Visibility = Visibility.Visible;
+            reminderOnOff.Content = "On";
         }
 
         private void reminderOnOff_Unchecked(object sender, RoutedEventArgs e)
-        {
-            tkDate.IsEnabled = tkTime.IsEnabled = false;
+        {            
+            spDateTime.Visibility = Visibility.Collapsed;
+            reminderOnOff.Content = "Off";
         }
         
     }

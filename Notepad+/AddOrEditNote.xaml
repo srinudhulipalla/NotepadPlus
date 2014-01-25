@@ -116,7 +116,7 @@
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                     <Image Height="50" Source="/Notepad%2b;component/images/Pin.png">
                     </Image>
-                    <TextBox Height="70" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="0,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="Bold" Foreground="#FFA11800" Width="367" />
+                    <TextBox Height="80" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="0,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="SemiBold" Foreground="#FFA11800" Width="367" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Disabled" />
                 </StackPanel>
             </Grid>
         </StackPanel>
@@ -136,10 +136,10 @@
             <shell:ApplicationBarIconButton IconUri="images/Save.png" Text="save" Click="SaveNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Delete.png" Text="delete" IsEnabled="False" Click="DeleteNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Cancel.png" Text="cancel" Click="CancelNote_Click"/>
-            <shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="reminder" Click="Reminder_Click"/>
+            <shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="reminder" Click="ReminderNote_Click"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="email this note"/>
-                <shell:ApplicationBarMenuItem Text="pin to start"/>
+                <shell:ApplicationBarMenuItem Text="email this note" Click="EmailNote_Click" />
+                <shell:ApplicationBarMenuItem Text="pin to start" Click="PinNoteToStart_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

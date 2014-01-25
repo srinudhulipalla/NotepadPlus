@@ -20,8 +20,8 @@
                     <Image Source="/Notepad%2b;component/images/Pin.png">
                     </Image>
                     <StackPanel Margin="5,10,0,0" Width="350">
-                        <TextBlock Text="{Binding Title}" Foreground="#FFA11800" FontSize="20"></TextBlock>
-                        <TextBlock Text="{Binding Created}" Foreground="Gray" FontStyle="Italic" FontSize="15"></TextBlock>
+                        <TextBlock Text="{Binding Title}" Foreground="#FFA11800" FontSize="23" FontWeight="Normal"></TextBlock>
+                        <TextBlock Text="{Binding Modified, StringFormat='{}{0:U}'}" Foreground="Gray" FontStyle="Italic" FontSize="16"></TextBlock>
                     </StackPanel>
                     <Image Visibility="{Binding HasReminder}" Source="/Notepad%2b;component/images/ReminderClock.png">
                     </Image>
@@ -45,11 +45,11 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Height="70" VerticalAlignment="Top">
             <Grid Height="70" Background="#FFB79544">
-                <TextBlock Height="40" Name="tbHeader" Text="Notepad+" Foreground="#FFA11800" Margin="153,8,85,6" FontSize="26" FontWeight="Bold" IsHitTestVisible="True" OpacityMask="Black" UseLayoutRounding="True" />
+                <TextBlock Height="56" Name="tbHeader" Text="Notepad+" Foreground="#FFA11800" Margin="153,8,85,0" FontSize="34" FontWeight="Bold" IsHitTestVisible="True" OpacityMask="Black" UseLayoutRounding="True" VerticalAlignment="Top" />
             </Grid>
         </StackPanel>
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Margin="0,6,0,15" Grid.Row="1">
+        <Grid x:Name="ContentPanel" Margin="0,0,0,15" Grid.Row="1">
             <ScrollViewer>
                 <ListBox HorizontalAlignment="Left" 
                      Margin="10,10,0,0" 
@@ -70,12 +70,11 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FFB79544">
             <shell:ApplicationBarIconButton IconUri="images/Add.png" Text="add note" Click="AddNote_Click"/>
-            <shell:ApplicationBarIconButton IconUri="images/Settings.png" Text="settings"/>
-            <shell:ApplicationBarIconButton IconUri="images/PinToStart.png" Text="pin to start"/>
+            <shell:ApplicationBarIconButton IconUri="images/Settings.png" Text="settings" Click="Settings_Click"/>            
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="rate this app"/>
-                <shell:ApplicationBarMenuItem Text="more apps"/>
-                <shell:ApplicationBarMenuItem Text="about"/>
+                <shell:ApplicationBarMenuItem Text="rate this app" Click="RateApp_Click"/>
+                <shell:ApplicationBarMenuItem Text="more apps" Click="MoreApps_Click"/>
+                <shell:ApplicationBarMenuItem Text="about" Click="About_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

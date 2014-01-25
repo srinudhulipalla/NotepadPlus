@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using NotepadPlus.Notes;
 using Microsoft.Phone.Shell;
 using Coding4Fun.Toolkit.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace NotepadPlus
 {
@@ -26,6 +25,22 @@ namespace NotepadPlus
         private Note EditedNote = null;
         NoteManager noteManager = new NoteManager();
         MessagePrompt ReminderPopup = null;
+
+        Note _currentNote = null;
+        Note CurrentNote
+        {
+            get
+            {
+                if (_currentNote == null)
+                    _currentNote = new Note();
+
+                return _currentNote;
+            }
+            set
+            {
+                _currentNote = value;
+            }
+        }
 
         NoteReminder _reminderControl = null;
         NoteReminder ReminderControl
@@ -42,15 +57,8 @@ namespace NotepadPlus
         public AddOrEditNote()
         {
             InitializeComponent();
-            this.Loaded += new RoutedEventHandler(AddNote_Loaded);
-
-
+            this.Loaded += new RoutedEventHandler(AddOrEditNote_Loaded);
         }
-
-        //void ReminderPopup_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
-        //{
-        //    this.Reminder.IsReminderSet = e.PopUpResult == PopUpResult.Ok;
-        //}
 
         void GotoNotesView()
         {
@@ -69,28 +77,19 @@ namespace NotepadPlus
             msgDialog.Show();
         }
 
-        void AddNote_Loaded(object sender, RoutedEventArgs e)
-        {
+        void AddOrEditNote_Loaded(object sender, RoutedEventArgs e)
+        {            
+            //initialize reminder details
             if (ReminderPopup == null)
             {
                 ReminderPopup = new MessagePrompt();
-                ReminderPopup.Title = "Note Reminder";
+                ReminderPopup.Title = NotepadSettings.NoteReminderTitle;
                 ReminderPopup.Body = this.ReminderControl;
                 ReminderPopup.IsCancelVisible = true;
 
                 ReminderPopup.Completed += (s, args) =>
                 {
-                    if (args.PopUpResult == PopUpResult.Ok)
-                    {
-                        this.ReminderControl.IsReminderSet = true;
-
-                        if (this.EditedNote != null)
-                        {                            
-                            this.EditedNote.ReminderDate = this.ReminderControl.Date;
-                            this.EditedNote.ReminderTime = this.ReminderControl.Time;
-                            this.EditedNote.HasReminder = this.ReminderControl.ReminderOnOff.IsChecked.HasValue && this.ReminderControl.ReminderOnOff.IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
-                        }
-                    }
+                    this.ReminderControl.IsReminderSet = args.PopUpResult == PopUpResult.Ok;                    
                 };
             }
             else if (!this.ReminderControl.IsReminderSet)
@@ -102,37 +101,11 @@ namespace NotepadPlus
             txtNoteContent.BorderBrush.Opacity = 0;
         }
 
-        //private void textBox3_GotFocus(object sender, RoutedEventArgs e)
-        //{
-        //    ImageBrush imgBrush = new ImageBrush();
-        //    imgBrush.ImageSource = new BitmapImage(new Uri("images/AddNoteBackground.jpg", UriKind.Relative));            
-        //}
-
-        private void txtNoteTitle_GotFocus(object sender, RoutedEventArgs e)
+        private Note GetCurrentNote()
         {
-            txtNoteTitle.Background = new SolidColorBrush(Color.FromArgb(0, 255, 183, 149));
-            txtNoteTitle.BorderThickness = new Thickness(0, 0, 0, 0);
-        }
-
-        private void txtNoteContent_GotFocus(object sender, RoutedEventArgs e)
-        {
-            txtNoteContent.Background = new SolidColorBrush(Color.FromArgb(255, 255, 238, 184));
-            txtNoteContent.BorderThickness = new Thickness(0, 0, 0, 0);
-        }
-
-        private void SaveNote_Click(object sender, EventArgs e)
-        {
-            Note note = null;
-
-            if (string.IsNullOrEmpty(txtNoteTitle.Text.Trim()))
+            if (string.IsNullOrEmpty(this.NoteId)) //new note
             {
-                ShowMessageDialog("Warning!", NotepadSettings.EmptyNoteTitle, false);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(this.NoteId))
-            {
-                note = new Note()
+                this.CurrentNote = new Note()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Title = txtNoteTitle.Text.Trim(),
@@ -141,17 +114,53 @@ namespace NotepadPlus
                     Modified = DateTime.Now
                 };
             }
-            else
+            else //edit note
             {
-                note = this.EditedNote;
-
-                note.Title = txtNoteTitle.Text.Trim();
-                note.Content = txtNoteContent.Text.Trim();
-                note.Modified = DateTime.Now;
+                this.CurrentNote = this.EditedNote;
+                this.CurrentNote.Title = txtNoteTitle.Text.Trim();
+                this.CurrentNote.Content = txtNoteContent.Text.Trim();
+                this.CurrentNote.Modified = DateTime.Now;
             }
 
+            if (this.ReminderControl.IsReminderSet && this.ReminderControl.IsReminderEnabled)
+            {
+                this.CurrentNote.ReminderDate = this.ReminderControl.Date;
+                this.CurrentNote.ReminderTime = this.ReminderControl.Time;
+                this.CurrentNote.HasReminder = Visibility.Visible;
+            }            
+
+            return this.CurrentNote;
+        }
+
+        private void SaveNote_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtNoteTitle.Text.Trim()))
+            {
+                ShowMessageDialog("Warning!", NotepadSettings.EmptyNoteTitle, false);
+                return;
+            }
+
+            Note note = GetCurrentNote();            
+
+            //note reminder
+            if (this.ReminderControl.IsReminderSet && this.ReminderControl.IsReminderEnabled)
+            {
+                //note.ReminderDate = this.ReminderControl.Date;
+                //note.ReminderTime = this.ReminderControl.Time;
+                //note.HasReminder = Visibility.Visible;
+
+                NotesReminder.AddOrUpdateReminder(note);
+            }
+            else
+            {
+                //note.HasReminder = Visibility.Collapsed;
+                NotesReminder.DeleteReminder(note.Id);
+            }            
+
+            //save note
             NoteManager noteManager = new NoteManager();
             bool success = noteManager.AddOrUpdateNote(note);
+            note = null;
 
             if (success)
             {
@@ -170,14 +179,13 @@ namespace NotepadPlus
                 Title = "Delete",
                 Message = NotepadSettings.DeleteNoteConfirm,
                 IsCancelVisible = true
-            };
+            };            
 
-            //DeleteNotePrompt.Completed += new EventHandler<PopUpEventArgs<string, PopUpResult>>(DeleteNotePrompt_Completed);
-
-            DeleteNotePrompt.Completed += (s, args) =>
+            DeleteNotePrompt.Completed += (s, args) => //delete note on confirm
             {
                 if (args.PopUpResult == PopUpResult.Ok)
                 {
+                    NotesReminder.DeleteReminder(this.NoteId);
                     bool success = noteManager.DeleteNote(this.NoteId);
 
                     if (success)
@@ -192,39 +200,46 @@ namespace NotepadPlus
             };
 
             DeleteNotePrompt.Show();
-        }
-
-        //void DeleteNotePrompt_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
-        //{
-        //    if (e.PopUpResult == PopUpResult.Ok)
-        //    {
-        //        bool success = noteManager.DeleteNote(this.NoteId);
-
-        //        if (success)
-        //        {
-        //            GotoNotesView();
-        //        }
-        //        else
-        //        {
-        //            ShowMessageDialog("Failure", NotepadSettings.DeleteNoteFailure, false);                    
-        //        }
-        //    }
-        //}
+        }        
 
         private void CancelNote_Click(object sender, EventArgs e)
         {
-            this.NavigationService.GoBack();
+            //goto home page
+            GotoNotesView(); 
         }
 
-        protected void Reminder_Click(object sender, EventArgs e)
+        protected void ReminderNote_Click(object sender, EventArgs e)
         {
-            if (this.EditedNote != null && this.EditedNote.HasReminder == Visibility.Visible)
+            //set saved reminder details on edit
+            if (this.EditedNote != null && this.EditedNote.HasReminder == Visibility.Visible) 
             {
                 this.ReminderControl.Date = this.EditedNote.ReminderDate;
-                this.ReminderControl.Time = this.EditedNote.ReminderTime;
+                this.ReminderControl.Time = this.EditedNote.ReminderTime;                
             }
 
             ReminderPopup.Show();
+        }
+
+        private void EmailNote_Click(object sender, EventArgs e)
+        {
+            Common.EmailNote(GetCurrentNote());
+        }
+
+        private void PinNoteToStart_Click(object sender, EventArgs e)
+        {            
+            Common.PinNoteToStart("/AddOrEditNote.xaml?noteId=" + this.CurrentNote.Id, this.CurrentNote);
+        }
+
+        private void txtNoteTitle_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtNoteTitle.Background = new SolidColorBrush(Color.FromArgb(0, 255, 183, 149));
+            txtNoteTitle.BorderThickness = new Thickness(0, 0, 0, 0);
+        }
+
+        private void txtNoteContent_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtNoteContent.Background = new SolidColorBrush(Color.FromArgb(255, 255, 238, 184));
+            txtNoteContent.BorderThickness = new Thickness(0, 0, 0, 0);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -245,8 +260,7 @@ namespace NotepadPlus
 
                 (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = true;
             }
-        }
-
+        }        
 
     }
 }
