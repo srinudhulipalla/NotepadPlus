@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Tasks;
 using System.Text;
 using Microsoft.Phone.Shell;
+using System.Windows.Navigation;
 
 namespace NotepadPlus.Notes
 {
@@ -30,19 +31,22 @@ namespace NotepadPlus.Notes
             appSearch.Show();
         }
 
-        public static void PinNoteToStart(string noteURI, Note note)
+        public static void PinNoteToStart(Note note)
         {
-            string ss = ShellTile.ConvertToXMLFormat(noteURI);
-
-
-            ShellTile.Create(new Uri(noteURI, UriKind.Relative), new StandardTileData()
+            try
             {
-                Title = note.Title,
-                BackgroundImage = new Uri("/ApplicationIcon.png", UriKind.Relative),
-                BackBackgroundImage = new Uri("", UriKind.Relative),
-                BackTitle = note.Title,
-                BackContent = note.Content
-            });
+                string noteURI = "/AddOrEditNote.xaml?noteId=" + note.Id;
+
+                ShellTile.Create(new Uri(noteURI, UriKind.Relative), new StandardTileData()
+                {
+                    Title = note.Title,
+                    BackgroundImage = new Uri("/Background.png", UriKind.Relative),
+                    BackBackgroundImage = new Uri("", UriKind.Relative),
+                    BackTitle = note.Title,
+                    BackContent = note.Content
+                });
+            }
+            catch { }
         }
 
         public static void EmailNote(Note note)
@@ -64,7 +68,7 @@ namespace NotepadPlus.Notes
 
             emailTask.Body = sb.ToString();
             emailTask.Show();
-        }
+        }        
         
     }
 }

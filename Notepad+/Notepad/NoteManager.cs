@@ -16,8 +16,16 @@ namespace NotepadPlus.Notes
 {
     public class NoteManager
     {
+        private const string noteSortByKey = "note_SortBy";
+
         private IsolatedStorageSettings settings { get; set; }
         public List<Note> Notes { get; private set; }
+
+        public enum SortType
+        {
+            Modified = 0,
+            Name = 1
+        }
 
         public NoteManager()
         {
@@ -71,8 +79,30 @@ namespace NotepadPlus.Notes
 
         public List<Note> GetNotes()
         {
-            this.Notes = settings.Values.Cast<Note>().ToList();            
+            this.Notes = settings.Values.OfType<Note>().ToList();
+
+            if (settings.Contains(noteSortByKey))
+            {
+                SortNotes((SortType)settings[noteSortByKey]);
+            }
+
             return this.Notes;
         }
+
+        private void SortNotes(SortType sortType)
+        {
+            if (this.Notes == null) return;
+
+            switch (sortType)
+            {
+                case SortType.Modified:
+                    this.Notes = this.Notes.OrderByDescending(i => i.Modified).ToList<Note>();
+                    break;
+                case SortType.Name:
+                    this.Notes = this.Notes.OrderBy(i => i.Title).ToList<Note>();
+                    break;
+            }
+        }
+
     }
 }

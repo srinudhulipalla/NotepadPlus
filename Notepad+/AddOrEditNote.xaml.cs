@@ -226,8 +226,8 @@ namespace NotepadPlus
         }
 
         private void PinNoteToStart_Click(object sender, EventArgs e)
-        {            
-            Common.PinNoteToStart("/AddOrEditNote.xaml?noteId=" + this.CurrentNote.Id, this.CurrentNote);
+        {
+            Common.PinNoteToStart(GetCurrentNote());
         }
 
         private void txtNoteTitle_GotFocus(object sender, RoutedEventArgs e)

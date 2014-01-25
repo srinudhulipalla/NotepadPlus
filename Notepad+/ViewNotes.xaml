@@ -45,7 +45,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Height="70" VerticalAlignment="Top">
             <Grid Height="70" Background="#FFB79544">
-                <TextBlock Height="56" Name="tbHeader" Text="Notepad+" Foreground="#FFA11800" Margin="153,8,85,0" FontSize="34" FontWeight="Bold" IsHitTestVisible="True" OpacityMask="Black" UseLayoutRounding="True" VerticalAlignment="Top" />
+                <TextBlock Height="56" Name="tbHeader" Text="Notepad+ (0)" Foreground="#FFA11800" Margin="128,8,110,0" FontSize="34" FontWeight="Bold" IsHitTestVisible="True" OpacityMask="Black" UseLayoutRounding="True" VerticalAlignment="Top" />
             </Grid>
         </StackPanel>
         <!--ContentPanel - place additional content here-->
