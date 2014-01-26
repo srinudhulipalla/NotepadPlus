@@ -10,8 +10,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
 
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="ListBoxItemTemplate">
@@ -21,7 +21,7 @@
                     </Image>
                     <StackPanel Margin="5,10,0,0" Width="350">
                         <TextBlock Text="{Binding Title}" Foreground="#FFA11800" FontSize="23" FontWeight="Normal"></TextBlock>
-                        <TextBlock Text="{Binding Modified, StringFormat='{}{0:U}'}" Foreground="Gray" FontStyle="Italic" FontSize="16"></TextBlock>
+                        <TextBlock Text="{Binding Modified, StringFormat='{}{0:F}'}" Foreground="Gray" FontStyle="Italic" FontSize="16"></TextBlock>
                     </StackPanel>
                     <Image Visibility="{Binding HasReminder}" Source="/Notepad%2b;component/images/ReminderClock.png">
                     </Image>

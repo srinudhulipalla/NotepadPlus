@@ -97,7 +97,7 @@ namespace NotepadPlus {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note title can&apos;t be empty..
+        ///   Looks up a localized string similar to Note name can&apos;t be empty..
         /// </summary>
         internal static string EmptyNoteTitle {
             get {
@@ -120,6 +120,15 @@ namespace NotepadPlus {
         internal static string NoteSaveFailure {
             get {
                 return ResourceManager.GetString("NoteSaveFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note name should be less than 20 characters.
+        /// </summary>
+        internal static string NoteTitleExceedLength {
+            get {
+                return ResourceManager.GetString("NoteTitleExceedLength", resourceCulture);
             }
         }
     }

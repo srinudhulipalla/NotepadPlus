@@ -41,12 +41,31 @@ namespace NotepadPlus
             {
                 return reminderOnOff.IsChecked.HasValue ? reminderOnOff.IsChecked.Value : false;
             }
+            set
+            {
+                UpdateReminder(value);
+                reminderOnOff.IsChecked = value;
+            }
         }
 
         public NoteReminder()
         {
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(NoteReminder_Loaded);
+        }
+
+        private void UpdateReminder(bool isReminderOn)
+        {
+            if (isReminderOn)
+            {
+                spDateTime.Visibility = Visibility.Visible;
+                reminderOnOff.Content = "On";
+            }
+            else
+            {
+                spDateTime.Visibility = Visibility.Collapsed;
+                reminderOnOff.Content = "Off";
+            }
         }
 
         void NoteReminder_Loaded(object sender, RoutedEventArgs e)
@@ -65,15 +84,13 @@ namespace NotepadPlus
         }
 
         private void reminderOnOff_Checked(object sender, RoutedEventArgs e)
-        {            
-            spDateTime.Visibility = Visibility.Visible;
-            reminderOnOff.Content = "On";
+        {
+            UpdateReminder(true);
         }
 
         private void reminderOnOff_Unchecked(object sender, RoutedEventArgs e)
-        {            
-            spDateTime.Visibility = Visibility.Collapsed;
-            reminderOnOff.Content = "Off";
+        {
+            UpdateReminder(false);
         }
         
     }

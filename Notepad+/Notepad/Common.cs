@@ -12,11 +12,19 @@ using Microsoft.Phone.Tasks;
 using System.Text;
 using Microsoft.Phone.Shell;
 using System.Windows.Navigation;
+using System.Reflection;
 
 namespace NotepadPlus.Notes
 {
     public class Common
     {
+        public static string GetAppVersion()
+        {
+            Assembly exeAssembly = Assembly.GetExecutingAssembly();
+            var name = new AssemblyName(exeAssembly.FullName);
+            return name.Version.ToString(3);
+        }
+
         public static void RateMyApp()
         {
             MarketplaceReviewTask appReview = new MarketplaceReviewTask();
@@ -55,15 +63,15 @@ namespace NotepadPlus.Notes
             emailTask.Subject = string.Format("{0} - {1}", NotepadSettings.AppName, note.Title);
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<b>Note Title: </b>" + note.Title);
+            sb.AppendLine("Note Title: " + note.Title);
             sb.AppendLine(Environment.NewLine);
-            sb.AppendLine("<b>Note Contents:</b>");
+            sb.AppendLine("Note Contents:");
             sb.AppendLine(note.Content);
             sb.AppendLine(Environment.NewLine);
 
             if (note.HasReminder == Visibility.Visible)
             {
-                sb.AppendLine("<b>Reminder: </b>" + (note.ReminderDate + note.ReminderTime.TimeOfDay).ToString("U"));
+                sb.AppendLine("Reminder: " + (note.ReminderDate + note.ReminderTime.TimeOfDay).ToString("U"));
             }
 
             emailTask.Body = sb.ToString();

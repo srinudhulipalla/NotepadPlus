@@ -10,8 +10,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls">
+    mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls">
 
     <phone:PhoneApplicationPage.Resources>
         <Style x:Key="TextBoxStyle1" TargetType="TextBox">
@@ -116,7 +116,9 @@
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                     <Image Height="50" Source="/Notepad%2b;component/images/Pin.png">
                     </Image>
-                    <TextBox Height="80" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="0,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="SemiBold" Foreground="#FFA11800" Width="367" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Disabled" />
+                    <TextBox Height="71" Name="txtNoteTitle" Text="New Note" Background="#FFB79544" Margin="0,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="SemiBold" Foreground="#FFA11800" Width="342" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Disabled" />
+                    <Image Name="imgReminderClock" Visibility="Collapsed" Height="50" Source="/Notepad%2b;component/images/ReminderClock.png">
+                    </Image>
                 </StackPanel>
             </Grid>
         </StackPanel>
@@ -140,6 +142,7 @@
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="email this note" Click="EmailNote_Click" />
                 <shell:ApplicationBarMenuItem Text="pin to start" Click="PinNoteToStart_Click"/>
+                <shell:ApplicationBarMenuItem Text="about" Click="About_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
