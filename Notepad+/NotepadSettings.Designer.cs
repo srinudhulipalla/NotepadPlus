@@ -106,6 +106,15 @@ namespace NotepadPlus {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Note.
+        /// </summary>
+        internal static string NewNoteTitle {
+            get {
+                return ResourceManager.GetString("NewNoteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Note Reminder.
         /// </summary>
         internal static string NoteReminderTitle {

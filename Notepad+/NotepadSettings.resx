@@ -132,6 +132,9 @@
   <data name="EmptyNoteTitle" xml:space="preserve">
     <value>Note name can't be empty.</value>
   </data>
+  <data name="NewNoteTitle" xml:space="preserve">
+    <value>New Note</value>
+  </data>
   <data name="NoteReminderTitle" xml:space="preserve">
     <value>Note Reminder</value>
   </data>

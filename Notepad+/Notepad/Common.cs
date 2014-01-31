@@ -39,6 +39,13 @@ namespace NotepadPlus.Notes
             appSearch.Show();
         }
 
+        public static void ShareNote(Note note)
+        {
+            ShareStatusTask shareTask = new ShareStatusTask();
+            shareTask.Status = note.Content.Trim();
+            shareTask.Show();
+        }
+
         public static void PinNoteToStart(Note note)
         {
             try

@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using NotepadPlus.Notes;
+using Microsoft.Phone.Shell;
 
 namespace NotepadPlus
 {
@@ -35,6 +36,9 @@ namespace NotepadPlus
         public ViewNotes()
         {
             InitializeComponent();
+
+            SystemTray.SetIsVisible(this, true);
+            SystemTray.SetOpacity(this, 0);
 
             this.DataContext = this.NoteManager;
             this.Loaded += new RoutedEventHandler(ViewNotes_Loaded);

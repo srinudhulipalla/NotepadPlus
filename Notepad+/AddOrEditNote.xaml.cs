@@ -101,13 +101,13 @@ namespace NotepadPlus
             {
                 ReminderPopup.Show();
             }
-
+            
             txtNoteTitle.BorderBrush.Opacity = 0;
             txtNoteContent.BorderBrush.Opacity = 0;
         }
 
         private Note GetCurrentNote()
-        {
+        {            
             if (string.IsNullOrEmpty(this.NoteId)) //new note
             {
                 this.CurrentNote = new Note()
@@ -216,11 +216,11 @@ namespace NotepadPlus
         protected void ReminderNote_Click(object sender, EventArgs e)
         {
             //set saved reminder details on edit
-            if (this.EditedNote != null)
+            if (this.EditedNote != null && this.EditedNote.HasReminder == Visibility.Visible)
             {
                 this.ReminderControl.Date = this.EditedNote.ReminderDate;
                 this.ReminderControl.Time = this.EditedNote.ReminderTime;
-                this.ReminderControl.IsReminderEnabled = this.EditedNote.HasReminder == Visibility.Visible ? true : false;
+                this.ReminderControl.IsReminderEnabled = true;
             }
             else
             {
@@ -237,12 +237,20 @@ namespace NotepadPlus
 
         private void PinNoteToStart_Click(object sender, EventArgs e)
         {
-            Common.PinNoteToStart(GetCurrentNote());
+            Note note = GetCurrentNote();
+
+            if (string.IsNullOrEmpty(this.NoteId))
+            {
+                note.Title = NotepadSettings.NewNoteTitle;
+                note.Content = string.Empty;
+            }
+
+            Common.PinNoteToStart(note);
         }
 
-        private void About_Click(object sender, EventArgs e)
+        private void Share_Click(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/About.xaml", UriKind.Relative));
+            Common.ShareNote(GetCurrentNote());
         }  
 
         private void txtNoteTitle_GotFocus(object sender, RoutedEventArgs e)
@@ -268,7 +276,12 @@ namespace NotepadPlus
                 this.NoteId = this.NavigationContext.QueryString["noteId"];
                 this.EditedNote = noteManager.GetNote(this.NoteId);
 
-                if (this.EditedNote == null) return;
+                if (this.EditedNote == null)
+                {
+                    this.NoteId = string.Empty;
+                    txtNoteTitle.Text = NotepadSettings.NewNoteTitle;
+                    return;
+                }
 
                 txtNoteTitle.Text = this.EditedNote.Title;
                 txtNoteContent.Text = this.EditedNote.Content;
