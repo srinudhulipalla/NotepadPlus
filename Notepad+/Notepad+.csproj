@@ -141,6 +141,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="images\About.png" />
+    <Content Include="images\Settings.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="images\ViewNotesBackground.jpg" />
@@ -153,7 +154,6 @@
     <Content Include="images\Reminder.png" />
     <Resource Include="images\ReminderClock.png" />
     <Content Include="images\Save.png" />
-    <Content Include="images\Settings.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
