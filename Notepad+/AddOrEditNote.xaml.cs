@@ -251,7 +251,7 @@ namespace NotepadPlus
 
         private void EmailNote_Click(object sender, EventArgs e)
         {
-            Common.EmailNote(GetCurrentNote());
+            Common.SendEmail(GetCurrentNote());
         }
 
         private void PinNoteToStart_Click(object sender, EventArgs e)

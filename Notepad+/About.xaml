@@ -28,31 +28,40 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ScrollViewer>
-                <StackPanel Margin="0,0,0,24">
-                    
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Notepad%2b;component/images/About.png">
-                        </Image>
-                        <StackPanel Margin="25">
-                            <TextBlock Text="Notepad+" Style="{StaticResource PhoneTextExtraLargeStyle}" Foreground="{StaticResource PhoneAccentBrush}"/>
-                            <TextBlock Text="Version: " Style="{StaticResource PhoneTextNormalStyle}"/>
-                        </StackPanel>
+            <!--<ScrollViewer>-->
+            <StackPanel Margin="0,0,0,24">
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Notepad%2b;component/images/About.png">
+                    </Image>
+                    <StackPanel Margin="25">
+                        <TextBlock Text="Notepad+" Style="{StaticResource PhoneTextExtraLargeStyle}" Foreground="{StaticResource PhoneAccentBrush}"/>
+                        <TextBlock Name="txtAppVersion" Text="Version: " Style="{StaticResource PhoneTextNormalStyle}"/>
                     </StackPanel>
-
-                    <TextBlock Style="{StaticResource PhoneTextLargeStyle}">
-                        by <Run Text="Srinivasa Rao Dhulipalla"></Run>
-                    </TextBlock>
-
-                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}" Margin="10,15,10,15" Text="notepad+ is a simple and fast app"/>
-
-                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap">
-                        <Run Text="For suggestions and feedback please reach developer at:" />
-
-                    </TextBlock>
-                    <HyperlinkButton Content="srinudhulipalla@gmail.com" Click="MailToDeveloper_Click" Foreground="{StaticResource PhoneAccentBrush}"></HyperlinkButton>
                 </StackPanel>
-            </ScrollViewer>
+
+                <TextBlock Name="txtDeveloperName" Style="{StaticResource PhoneTextLargeStyle}">
+                        by
+                </TextBlock>
+
+                <TextBlock Name="txtAppInfo" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" Margin="10,15,10,15">
+                        <Run Text="Notepad+ is a light weight, smart and good looking application for managing all your daily life notes."></Run>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="The goal of the Notepad+ is letting you create, edit and managing your notes."></Run>
+                </TextBlock>
+
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap">
+                        <Run Text="For any suggestions and feedback please reach developer at:" />
+
+                </TextBlock>
+                <HyperlinkButton Name="lnkDeveloperEmail" Content="[Developer Email Id]" Click="MailToDeveloper_Click" Foreground="{StaticResource PhoneAccentBrush}"></HyperlinkButton>
+
+                <TextBlock Text="Please review and share your experience of the app to others." Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap" Margin="10,15,10,15"/>
+
+                <Button Name="btnReview" Content="Review" Click="btnReview_Click"/>
+            </StackPanel>
+            <!--</ScrollViewer>-->
         </Grid>
     </Grid>
 

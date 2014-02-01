@@ -96,10 +96,10 @@ namespace NotepadPlus.Notes
             switch (sortType)
             {
                 case SortType.Modified:
-                    this.Notes = this.Notes.OrderByDescending(i => i.Modified).ToList<Note>();
+                    this.Notes = this.Notes.OrderByDescending(i => i.Modified).ToList();
                     break;
                 case SortType.Name:
-                    this.Notes = this.Notes.OrderBy(i => i.Title).ToList<Note>();
+                    this.Notes = this.Notes.OrderBy(i => i.Title).ToList();
                     break;
             }
         }

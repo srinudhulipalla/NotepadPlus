@@ -64,7 +64,7 @@ namespace NotepadPlus.Notes
             catch { }
         }
 
-        public static void EmailNote(Note note)
+        public static void SendEmail(Note note)
         {
             EmailComposeTask emailTask = new EmailComposeTask();
             emailTask.Subject = string.Format("{0} - {1}", NotepadSettings.AppName, note.Title);

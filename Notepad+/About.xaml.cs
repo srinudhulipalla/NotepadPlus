@@ -19,6 +19,15 @@ namespace NotepadPlus
         public About()
         {
             InitializeComponent();
+
+            this.Loaded += new RoutedEventHandler(About_Loaded);
+        }
+
+        void About_Loaded(object sender, RoutedEventArgs e)
+        {
+            txtAppVersion.Text += Common.GetAppVersion();
+            lnkDeveloperEmail.Content = NotepadSettings.DeveloperEmail;
+            txtDeveloperName.Inlines.Add(new Run() { Text = " " + NotepadSettings.DeveloperName });
         }
 
         private void MailToDeveloper_Click(object sender, RoutedEventArgs e)
@@ -26,5 +35,11 @@ namespace NotepadPlus
             string subject = string.Format("{0} v{1} - Feedback", NotepadSettings.AppName, Common.GetAppVersion());
             Common.SendEmail(NotepadSettings.DeveloperEmail, subject, string.Empty);
         }
+
+        private void btnReview_Click(object sender, RoutedEventArgs e)
+        {
+            Common.RateMyApp();
+        }
+
     }
 }

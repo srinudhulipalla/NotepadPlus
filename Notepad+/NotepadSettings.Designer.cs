@@ -61,6 +61,15 @@ namespace NotepadPlus {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notepad+ is a light weight smart and good looking application for creating and managing your texts..
+        /// </summary>
+        internal static string AppInfo {
+            get {
+                return ResourceManager.GetString("AppInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notepad+.
         /// </summary>
         internal static string AppName {
@@ -106,11 +115,20 @@ namespace NotepadPlus {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to srinudhulipalla@gmail.com.
+        ///   Looks up a localized string similar to srinudhulipallawpapps@gmail.com.
         /// </summary>
         internal static string DeveloperEmail {
             get {
                 return ResourceManager.GetString("DeveloperEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Srinivasa Rao Dhulipalla.
+        /// </summary>
+        internal static string DeveloperName {
+            get {
+                return ResourceManager.GetString("DeveloperName", resourceCulture);
             }
         }
         
