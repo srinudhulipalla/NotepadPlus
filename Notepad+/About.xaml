@@ -50,7 +50,7 @@
                         <Run Text="For suggestions and feedback please reach developer at:" />
 
                     </TextBlock>
-                    <HyperlinkButton Content="srinudhulipalla@gmail.com" Foreground="{StaticResource PhoneAccentBrush}"></HyperlinkButton>
+                    <HyperlinkButton Content="srinudhulipalla@gmail.com" Click="MailToDeveloper_Click" Foreground="{StaticResource PhoneAccentBrush}"></HyperlinkButton>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

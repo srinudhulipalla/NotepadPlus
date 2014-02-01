@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using NotepadPlus.Notes;
 
 namespace NotepadPlus
 {
@@ -18,6 +19,12 @@ namespace NotepadPlus
         public About()
         {
             InitializeComponent();
+        }
+
+        private void MailToDeveloper_Click(object sender, RoutedEventArgs e)
+        {
+            string subject = string.Format("{0} v{1} - Feedback", NotepadSettings.AppName, Common.GetAppVersion());
+            Common.SendEmail(NotepadSettings.DeveloperEmail, subject, string.Empty);
         }
     }
 }

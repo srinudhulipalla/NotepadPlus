@@ -15,7 +15,7 @@ namespace NotepadPlus
 {
     public partial class NoteReminder : UserControl
     {
-        public bool IsReminderSet { get; set; } 
+        //public bool IsReminderSet { get; set; } 
 
         public DateTime Date
         {
@@ -69,8 +69,8 @@ namespace NotepadPlus
         }
 
         void NoteReminder_Loaded(object sender, RoutedEventArgs e)
-        {    
-
+        {
+            
         }
 
         private void tkDate_ValueChanged(object sender, Microsoft.Phone.Controls.DateTimeValueChangedEventArgs e)

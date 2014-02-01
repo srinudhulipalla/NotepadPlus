@@ -11,15 +11,16 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="False" UseLayoutRounding="False">
-
+    shell:SystemTray.IsVisible="False" UseLayoutRounding="False"
+    Style="{StaticResource TransitionPageStyle}">    
+    
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="ListBoxItemTemplate">
             <Border BorderThickness="0,0,0,1" BorderBrush="Green" Width="500">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Notepad%2b;component/images/Pin.png">
                     </Image>
-                    <StackPanel Margin="5,10,0,0" Width="350">
+                    <StackPanel Margin="5,10,0,3" Width="350">
                         <TextBlock Text="{Binding Title}" Foreground="#FFA11800" FontSize="23" FontWeight="Normal"></TextBlock>
                         <TextBlock Text="{Binding Modified, StringFormat='{}{0:F}'}" Foreground="Gray" FontStyle="Italic" FontSize="16"></TextBlock>
                     </StackPanel>

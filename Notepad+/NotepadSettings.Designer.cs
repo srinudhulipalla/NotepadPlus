@@ -79,6 +79,15 @@ namespace NotepadPlus {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this note?.
         /// </summary>
         internal static string DeleteNoteConfirm {
@@ -97,11 +106,29 @@ namespace NotepadPlus {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to srinudhulipalla@gmail.com.
+        /// </summary>
+        internal static string DeveloperEmail {
+            get {
+                return ResourceManager.GetString("DeveloperEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Note name can&apos;t be empty..
         /// </summary>
         internal static string EmptyNoteTitle {
             get {
                 return ResourceManager.GetString("EmptyNoteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed!.
+        /// </summary>
+        internal static string Fail {
+            get {
+                return ResourceManager.GetString("Fail", resourceCulture);
             }
         }
         
@@ -138,6 +165,15 @@ namespace NotepadPlus {
         internal static string NoteTitleExceedLength {
             get {
                 return ResourceManager.GetString("NoteTitleExceedLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning!.
+        /// </summary>
+        internal static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

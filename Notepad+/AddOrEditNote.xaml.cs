@@ -20,10 +20,10 @@ namespace NotepadPlus
 {
     public partial class AddOrEditNote : PhoneApplicationPage
     {
-        private string NoteId = string.Empty;
+        string NoteId = string.Empty;
+        bool IsReminderSet = false;
 
-        private Note EditedNote = null;
-        NoteManager noteManager = new NoteManager();
+        Note EditedNote = null;        
         MessagePrompt ReminderPopup = null;
 
         Note _currentNote = null;
@@ -51,6 +51,18 @@ namespace NotepadPlus
                     _reminderControl = new NoteReminder();
 
                 return _reminderControl;
+            }
+        }
+
+        NoteManager _noteManager = null;
+        NoteManager NoteManager
+        {
+            get
+            {
+                if (_noteManager == null)
+                    _noteManager = new NoteManager();
+
+                return _noteManager;
             }
         }
 
@@ -85,30 +97,38 @@ namespace NotepadPlus
                 ReminderPopup = new MessagePrompt();
                 ReminderPopup.Title = NotepadSettings.NoteReminderTitle;
                 ReminderPopup.Body = this.ReminderControl;
-                ReminderPopup.IsCancelVisible = true;                
+                ReminderPopup.IsCancelVisible = true;
+                this.ReminderControl.IsReminderEnabled = false;
 
                 ReminderPopup.Completed += (s, args) =>
-                {
-                    this.ReminderControl.IsReminderSet = args.PopUpResult == PopUpResult.Ok;
-
+                {    
                     if (args.PopUpResult == PopUpResult.Ok)
-                    {                        
+                    {
                         imgReminderClock.Visibility = this.ReminderControl.IsReminderEnabled ? Visibility.Visible : Visibility.Collapsed;
+                        IsReminderSet = this.ReminderControl.IsReminderEnabled;
                     }
+                    else
+                    {
+                        this.ReminderControl.IsReminderEnabled = IsReminderSet;
+                    }
+
+                    //this.ReminderControl.IsReminderSet = args.PopUpResult == PopUpResult.Ok;
                 };
             }
-            else if (!this.ReminderControl.IsReminderSet)
-            {
-                ReminderPopup.Show();
-            }
+            //else if (!this.ReminderControl.IsReminderSet)
+            //{
+            //    ReminderPopup.Show();
+            //}
             
             txtNoteTitle.BorderBrush.Opacity = 0;
             txtNoteContent.BorderBrush.Opacity = 0;
         }
 
         private Note GetCurrentNote()
-        {            
-            if (string.IsNullOrEmpty(this.NoteId)) //new note
+        {
+            bool isNewNote = string.IsNullOrEmpty(this.NoteId);
+
+            if (isNewNote) //new note
             {
                 this.CurrentNote = new Note()
                 {
@@ -127,12 +147,16 @@ namespace NotepadPlus
                 this.CurrentNote.Modified = DateTime.Now;
             }
 
-            if (this.ReminderControl.IsReminderSet && this.ReminderControl.IsReminderEnabled)
+            if (this.IsReminderSet && this.ReminderControl.IsReminderEnabled)
             {
                 this.CurrentNote.ReminderDate = this.ReminderControl.Date;
                 this.CurrentNote.ReminderTime = this.ReminderControl.Time;
                 this.CurrentNote.HasReminder = Visibility.Visible;
-            }            
+            }
+            else
+            {
+                this.CurrentNote.HasReminder = Visibility.Collapsed;
+            }
 
             return this.CurrentNote;
         }
@@ -141,19 +165,19 @@ namespace NotepadPlus
         {
             if (string.IsNullOrEmpty(txtNoteTitle.Text.Trim()))
             {
-                ShowMessageDialog("Warning!", NotepadSettings.EmptyNoteTitle, false);
+                ShowMessageDialog(NotepadSettings.Warning, NotepadSettings.EmptyNoteTitle, false);
                 return;
             }
             else if (txtNoteTitle.Text.Trim().Length > 20)
             {
-                ShowMessageDialog("Warning!", NotepadSettings.NoteTitleExceedLength, false);
+                ShowMessageDialog(NotepadSettings.Warning, NotepadSettings.NoteTitleExceedLength, false);
                 return;
             }
 
             Note note = GetCurrentNote();            
 
-            //note reminder
-            if (this.ReminderControl.IsReminderSet && this.ReminderControl.IsReminderEnabled)
+            //set or delete note reminder
+            if (this.IsReminderSet && this.ReminderControl.IsReminderEnabled)
             {    
                 NotesReminder.AddOrUpdateReminder(note);
             }
@@ -162,9 +186,8 @@ namespace NotepadPlus
                 NotesReminder.DeleteReminder(note.Id);
             }            
 
-            //save note
-            NoteManager noteManager = new NoteManager();
-            bool success = noteManager.AddOrUpdateNote(note);
+            //save note            
+            bool success = this.NoteManager.AddOrUpdateNote(note);
             note = null;
 
             if (success)
@@ -173,7 +196,7 @@ namespace NotepadPlus
             }
             else
             {
-                ShowMessageDialog("Failure", NotepadSettings.NoteSaveFailure, false);
+                ShowMessageDialog(NotepadSettings.Fail, NotepadSettings.NoteSaveFailure, false);
             }
         }
 
@@ -181,7 +204,7 @@ namespace NotepadPlus
         {
             var DeleteNotePrompt = new MessagePrompt()
             {
-                Title = "Delete",
+                Title = NotepadSettings.Delete,
                 Message = NotepadSettings.DeleteNoteConfirm,
                 IsCancelVisible = true
             };            
@@ -191,7 +214,7 @@ namespace NotepadPlus
                 if (args.PopUpResult == PopUpResult.Ok)
                 {
                     NotesReminder.DeleteReminder(this.NoteId);
-                    bool success = noteManager.DeleteNote(this.NoteId);
+                    bool success = this.NoteManager.DeleteNote(this.NoteId);
 
                     if (success)
                     {
@@ -199,7 +222,7 @@ namespace NotepadPlus
                     }
                     else
                     {
-                        ShowMessageDialog("Failure", NotepadSettings.DeleteNoteFailure, false);
+                        ShowMessageDialog(NotepadSettings.Fail, NotepadSettings.DeleteNoteFailure, false);
                     }
                 }
             };
@@ -221,11 +244,7 @@ namespace NotepadPlus
                 this.ReminderControl.Date = this.EditedNote.ReminderDate;
                 this.ReminderControl.Time = this.EditedNote.ReminderTime;
                 this.ReminderControl.IsReminderEnabled = true;
-            }
-            else
-            {
-                this.ReminderControl.IsReminderEnabled = false;
-            }
+            }            
 
             ReminderPopup.Show();
         }
@@ -238,7 +257,8 @@ namespace NotepadPlus
         private void PinNoteToStart_Click(object sender, EventArgs e)
         {
             Note note = GetCurrentNote();
-
+            
+            //for new note
             if (string.IsNullOrEmpty(this.NoteId))
             {
                 note.Title = NotepadSettings.NewNoteTitle;
@@ -274,7 +294,7 @@ namespace NotepadPlus
             if (this.NavigationContext.QueryString.ContainsKey("noteId"))
             {
                 this.NoteId = this.NavigationContext.QueryString["noteId"];
-                this.EditedNote = noteManager.GetNote(this.NoteId);
+                this.EditedNote = this.NoteManager.GetNote(this.NoteId);
 
                 if (this.EditedNote == null)
                 {

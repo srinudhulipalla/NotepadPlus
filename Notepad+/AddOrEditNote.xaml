@@ -11,8 +11,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls">
-
+    shell:SystemTray.IsVisible="False">    
+    
     <phone:PhoneApplicationPage.Resources>
         <Style x:Key="TextBoxStyle1" TargetType="TextBox">
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
@@ -124,15 +124,18 @@
         </StackPanel>
 
 
-        <!--ContentPanel - place additional content here-->
-        <TextBox Name="txtNoteContent" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" VerticalAlignment="Top" Style="{StaticResource TextBoxStyle1}"
-                 Background="#FFFFEEB8" BorderBrush="#FFFFEEB8" 
-                 GotFocus="txtNoteContent_GotFocus" InputScope="Text"  Height="614" FontFamily="Comic Sans MS">
-            
-            
-        </TextBox>
-               
-        
+        <!--Note content-->
+        <TextBox Name="txtNoteContent" Grid.Row="1" 
+                 AcceptsReturn="True" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top" 
+                 Style="{StaticResource TextBoxStyle1}"
+                 Background="#FFFFEEB8" 
+                 BorderBrush="#FFFFEEB8" 
+                 GotFocus="txtNoteContent_GotFocus" 
+                 InputScope="Text"  
+                 Height="650" 
+                 FontFamily="Comic Sans MS" />        
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->

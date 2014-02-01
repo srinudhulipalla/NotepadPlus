@@ -22,7 +22,7 @@ namespace NotepadPlus.Notes
         {
             Assembly exeAssembly = Assembly.GetExecutingAssembly();
             var name = new AssemblyName(exeAssembly.FullName);
-            return name.Version.ToString(3);
+            return name.Version.ToString(4);
         }
 
         public static void RateMyApp()
@@ -40,7 +40,7 @@ namespace NotepadPlus.Notes
         }
 
         public static void ShareNote(Note note)
-        {
+        {            
             ShareStatusTask shareTask = new ShareStatusTask();
             shareTask.Status = note.Content.Trim();
             shareTask.Show();
@@ -83,7 +83,19 @@ namespace NotepadPlus.Notes
 
             emailTask.Body = sb.ToString();
             emailTask.Show();
-        }        
+        }
+
+        public static void SendEmail(string toEmail, string subject, string body)
+        {
+            EmailComposeTask emailTask = new EmailComposeTask()
+            {
+                To = toEmail,
+                Subject = subject,
+                Body = body
+            };
+
+            emailTask.Show();
+        }
         
     }
 }
