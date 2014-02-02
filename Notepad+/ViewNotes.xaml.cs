@@ -52,7 +52,14 @@ namespace NotepadPlus
 
         void ViewNotes_Loaded(object sender, RoutedEventArgs e)
         {
-            tbHeader.Text = string.Format("Notepad+ ({0})", this.NoteManager.Notes.Count);
+            if (this.NoteManager.Notes.Count > 0)
+            {
+                tbHeader.Text = string.Format("{0} ({1})", NotepadSettings.AppName, this.NoteManager.Notes.Count);
+            }
+            else
+            {
+                tbHeader.Text = NotepadSettings.AppName;
+            }
         }
 
         private void lstNotes_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -21,10 +21,11 @@ namespace NotepadPlus
     public partial class AddOrEditNote : PhoneApplicationPage
     {
         string NoteId = string.Empty;
-        bool IsReminderSet = false;
+        bool IsReminderSet = true;
 
         Note EditedNote = null;        
         MessagePrompt ReminderPopup = null;
+        Thickness popupMargin = new Thickness(10, 150, 10, 0);
 
         Note _currentNote = null;
         Note CurrentNote
@@ -83,11 +84,12 @@ namespace NotepadPlus
             {
                 Title = title,
                 Message = message,
-                IsCancelVisible = showCancel
+                IsCancelVisible = showCancel,
+                Margin = popupMargin
             };
 
             msgDialog.Show();
-        }
+        }        
 
         void AddOrEditNote_Loaded(object sender, RoutedEventArgs e)
         {            
@@ -97,28 +99,41 @@ namespace NotepadPlus
                 ReminderPopup = new MessagePrompt();
                 ReminderPopup.Title = NotepadSettings.NoteReminderTitle;
                 ReminderPopup.Body = this.ReminderControl;
-                ReminderPopup.IsCancelVisible = true;
+                ReminderPopup.IsCancelVisible = false;
+                ReminderPopup.Margin = popupMargin;
                 this.ReminderControl.IsReminderEnabled = false;
 
                 ReminderPopup.Completed += (s, args) =>
                 {    
                     if (args.PopUpResult == PopUpResult.Ok)
                     {
-                        imgReminderClock.Visibility = this.ReminderControl.IsReminderEnabled ? Visibility.Visible : Visibility.Collapsed;
                         IsReminderSet = this.ReminderControl.IsReminderEnabled;
+
+                        if (IsReminderSet)
+                        {
+                            this.CurrentNote.ReminderDate = this.ReminderControl.Date;
+                            this.CurrentNote.ReminderTime = this.ReminderControl.Time;
+                            this.CurrentNote.HasReminder = Visibility.Visible;
+                            imgReminderClock.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            this.CurrentNote.HasReminder = Visibility.Collapsed;
+                            imgReminderClock.Visibility = Visibility.Collapsed;
+                        }
                     }
                     else
-                    {
-                        this.ReminderControl.IsReminderEnabled = IsReminderSet;
+                    {                        
+                        this.ReminderControl.IsReminderEnabled = IsReminderSet;                        
                     }
 
-                    //this.ReminderControl.IsReminderSet = args.PopUpResult == PopUpResult.Ok;
+                    this.ReminderControl.IsCompleted = args.PopUpResult == PopUpResult.Ok;
                 };
             }
-            //else if (!this.ReminderControl.IsReminderSet)
-            //{
-            //    ReminderPopup.Show();
-            //}
+            else if (!this.ReminderControl.IsCompleted)
+            {
+                ReminderPopup.Show();
+            }
             
             txtNoteTitle.BorderBrush.Opacity = 0;
             txtNoteContent.BorderBrush.Opacity = 0;
@@ -147,7 +162,7 @@ namespace NotepadPlus
                 this.CurrentNote.Modified = DateTime.Now;
             }
 
-            if (this.IsReminderSet && this.ReminderControl.IsReminderEnabled)
+            if (this.ReminderControl.IsCompleted && this.ReminderControl.IsReminderEnabled)
             {
                 this.CurrentNote.ReminderDate = this.ReminderControl.Date;
                 this.CurrentNote.ReminderTime = this.ReminderControl.Time;
@@ -177,7 +192,7 @@ namespace NotepadPlus
             Note note = GetCurrentNote();            
 
             //set or delete note reminder
-            if (this.IsReminderSet && this.ReminderControl.IsReminderEnabled)
+            if (this.ReminderControl.IsCompleted && this.ReminderControl.IsReminderEnabled)
             {    
                 NotesReminder.AddOrUpdateReminder(note);
             }
@@ -206,7 +221,8 @@ namespace NotepadPlus
             {
                 Title = NotepadSettings.Delete,
                 Message = NotepadSettings.DeleteNoteConfirm,
-                IsCancelVisible = true
+                IsCancelVisible = true,
+                Margin = popupMargin
             };            
 
             DeleteNotePrompt.Completed += (s, args) => //delete note on confirm
@@ -238,14 +254,15 @@ namespace NotepadPlus
 
         protected void ReminderNote_Click(object sender, EventArgs e)
         {
-            //set saved reminder details on edit
-            if (this.EditedNote != null && this.EditedNote.HasReminder == Visibility.Visible)
+            //set current note/saved note reminder details to reminder popup            
+            if (this.CurrentNote.HasReminder == Visibility.Visible)
             {
-                this.ReminderControl.Date = this.EditedNote.ReminderDate;
-                this.ReminderControl.Time = this.EditedNote.ReminderTime;
+                this.ReminderControl.Date = this.CurrentNote.ReminderDate;
+                this.ReminderControl.Time = this.CurrentNote.ReminderTime;
                 this.ReminderControl.IsReminderEnabled = true;
             }            
 
+            this.ReminderControl.IsCompleted = false;
             ReminderPopup.Show();
         }
 
@@ -306,6 +323,10 @@ namespace NotepadPlus
                 txtNoteTitle.Text = this.EditedNote.Title;
                 txtNoteContent.Text = this.EditedNote.Content;
                 imgReminderClock.Visibility = this.EditedNote.HasReminder;
+
+                this.CurrentNote.ReminderDate = this.EditedNote.ReminderDate;
+                this.CurrentNote.ReminderTime = this.EditedNote.ReminderTime;
+                this.CurrentNote.HasReminder = this.EditedNote.HasReminder;
 
                 (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = true;
             }

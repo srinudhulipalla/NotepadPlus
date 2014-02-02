@@ -15,7 +15,7 @@ namespace NotepadPlus
 {
     public partial class NoteReminder : UserControl
     {
-        //public bool IsReminderSet { get; set; } 
+        public bool IsCompleted { get; set; } 
 
         public DateTime Date
         {
