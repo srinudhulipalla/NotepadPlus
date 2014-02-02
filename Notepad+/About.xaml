@@ -59,7 +59,7 @@
 
                 <TextBlock Text="Please review and share your experience of the app with others." Style="{StaticResource PhoneTextNormalStyle}" TextWrapping="Wrap" Margin="10,15,10,15"/>
 
-                <Button Name="btnReview" Content="Review" Click="btnReview_Click"/>
+                <Button Name="btnReview" Content="Rate &amp; Review" Click="btnReview_Click"/>
             </StackPanel>
             <!--</ScrollViewer>-->
         </Grid>
