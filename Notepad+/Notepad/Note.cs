@@ -18,8 +18,8 @@ namespace NotepadPlus.Notes
         private string _title = string.Empty;
         private string _content = string.Empty;
         private Visibility _hasReminder = Visibility.Collapsed;
-        private DateTime _reminderDate;
-        private DateTime _reminderTime;
+        private DateTime _reminderDate = DateTime.Now;
+        private DateTime _reminderTime = DateTime.Now;
         private DateTime _created;
         private DateTime _modified;        
 

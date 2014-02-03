@@ -68,7 +68,7 @@ namespace NotepadPlus.Notes
         }
 
         public Note GetNote(string noteId)
-        {
+        {            
             if (settings.Contains(noteId))
             {
                 return settings[noteId] as Note;
@@ -84,6 +84,10 @@ namespace NotepadPlus.Notes
             if (settings.Contains(noteSortByKey))
             {
                 SortNotes((SortType)settings[noteSortByKey]);
+            }
+            else
+            {
+                SortNotes(SortType.Modified);
             }
 
             return this.Notes;

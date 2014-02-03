@@ -64,7 +64,7 @@ namespace NotepadPlus
                     _noteManager = new NoteManager();
 
                 return _noteManager;
-            }
+            }            
         }
 
         public AddOrEditNote()
@@ -101,26 +101,31 @@ namespace NotepadPlus
                 ReminderPopup.Body = this.ReminderControl;
                 ReminderPopup.IsCancelVisible = false;
                 ReminderPopup.Margin = popupMargin;
-                this.ReminderControl.IsReminderEnabled = false;
+                //this.ReminderControl.IsReminderEnabled = false;
+
+                UpdateUI();
 
                 ReminderPopup.Completed += (s, args) =>
                 {    
                     if (args.PopUpResult == PopUpResult.Ok)
                     {
-                        IsReminderSet = this.ReminderControl.IsReminderEnabled;
+                        this.IsReminderSet = this.ReminderControl.IsReminderEnabled;
+                        imgReminderClock.Visibility = this.IsReminderSet ? Visibility.Visible : Visibility.Collapsed;
 
-                        if (IsReminderSet)
-                        {
-                            this.CurrentNote.ReminderDate = this.ReminderControl.Date;
-                            this.CurrentNote.ReminderTime = this.ReminderControl.Time;
-                            this.CurrentNote.HasReminder = Visibility.Visible;
-                            imgReminderClock.Visibility = Visibility.Visible;
-                        }
-                        else
-                        {
-                            this.CurrentNote.HasReminder = Visibility.Collapsed;
-                            imgReminderClock.Visibility = Visibility.Collapsed;
-                        }
+                        //if (this.IsReminderSet)
+                        //{
+                        //    //this.CurrentNote.ReminderDate = this.ReminderControl.Date;
+                        //    //this.CurrentNote.ReminderTime = this.ReminderControl.Time;
+                        //    //this.CurrentNote.HasReminder = Visibility.Visible;
+                        //    imgReminderClock.Visibility = Visibility.Visible;
+                        //}
+                        //else
+                        //{
+                        //    //this.CurrentNote.HasReminder = Visibility.Collapsed;
+                        //    imgReminderClock.Visibility = Visibility.Collapsed;
+                        //}
+
+                        //GetCurrentNote();
                     }
                     else
                     {                        
@@ -156,7 +161,7 @@ namespace NotepadPlus
             }
             else //edit note
             {
-                this.CurrentNote = this.EditedNote;
+                //this.CurrentNote = this.EditedNote;
                 this.CurrentNote.Title = txtNoteTitle.Text.Trim();
                 this.CurrentNote.Content = txtNoteContent.Text.Trim();
                 this.CurrentNote.Modified = DateTime.Now;
@@ -255,12 +260,14 @@ namespace NotepadPlus
         protected void ReminderNote_Click(object sender, EventArgs e)
         {
             //set current note/saved note reminder details to reminder popup            
-            if (this.CurrentNote.HasReminder == Visibility.Visible)
-            {
-                this.ReminderControl.Date = this.CurrentNote.ReminderDate;
-                this.ReminderControl.Time = this.CurrentNote.ReminderTime;
-                this.ReminderControl.IsReminderEnabled = true;
-            }            
+            //if (this.CurrentNote.HasReminder == Visibility.Visible)
+            //{
+            //    this.ReminderControl.Date = this.CurrentNote.ReminderDate;
+            //    this.ReminderControl.Time = this.CurrentNote.ReminderTime;
+            //    this.ReminderControl.IsReminderEnabled = true;
+            //}            
+
+            //UpdateUI();
 
             this.ReminderControl.IsCompleted = false;
             ReminderPopup.Show();
@@ -315,22 +322,45 @@ namespace NotepadPlus
 
                 if (this.EditedNote == null)
                 {
-                    this.NoteId = string.Empty;
-                    txtNoteTitle.Text = NotepadSettings.NewNoteTitle;
+                    this.NoteId = string.Empty;                    
                     return;
                 }
 
-                txtNoteTitle.Text = this.EditedNote.Title;
-                txtNoteContent.Text = this.EditedNote.Content;
-                imgReminderClock.Visibility = this.EditedNote.HasReminder;
+                this.CurrentNote = this.EditedNote;                
+                this.EditedNote = null;
 
-                this.CurrentNote.ReminderDate = this.EditedNote.ReminderDate;
-                this.CurrentNote.ReminderTime = this.EditedNote.ReminderTime;
-                this.CurrentNote.HasReminder = this.EditedNote.HasReminder;
+                //txtNoteTitle.Text = this.EditedNote.Title;
+                //txtNoteContent.Text = this.EditedNote.Content;
+                //imgReminderClock.Visibility = this.EditedNote.HasReminder;
+
+                //this.CurrentNote.ReminderDate =this.ReminderControl.Date = this.EditedNote.ReminderDate;
+                //this.CurrentNote.ReminderTime = this.ReminderControl.Time = this.EditedNote.ReminderTime;
+                //this.CurrentNote.HasReminder = this.EditedNote.HasReminder;
+                //this.ReminderControl.IsCompleted = this.ReminderControl.IsReminderEnabled = (this.CurrentNote.HasReminder == Visibility.Visible) ? true : false;
 
                 (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = true;
             }
-        }        
+        }
+
+        void UpdateUI()
+        {
+            if (string.IsNullOrEmpty(this.CurrentNote.Title))
+            {
+                txtNoteTitle.Text = NotepadSettings.NewNoteTitle;
+                txtNoteContent.Text = string.Empty;
+            }
+            else
+            {
+                txtNoteTitle.Text = this.CurrentNote.Title;
+                txtNoteContent.Text = this.CurrentNote.Content;
+            }
+
+            imgReminderClock.Visibility = this.CurrentNote.HasReminder;
+
+            this.ReminderControl.IsReminderEnabled = this.ReminderControl.IsCompleted = (this.CurrentNote.HasReminder == Visibility.Visible) ? true : false;
+            this.ReminderControl.Date = this.CurrentNote.ReminderDate;
+            this.ReminderControl.Time = this.CurrentNote.ReminderTime;
+        }
 
     }
 }
