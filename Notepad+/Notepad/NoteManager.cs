@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.IO.IsolatedStorage;
+using System.IO;
+using Microsoft.Xna.Framework.Audio;
 
 namespace NotepadPlus.Notes
 {
@@ -105,6 +107,50 @@ namespace NotepadPlus.Notes
                 case SortType.Name:
                     this.Notes = this.Notes.OrderBy(i => i.Title).ToList();
                     break;
+            }
+        }
+
+        public bool SaveNoteAudio(string noteId, MemoryStream streamAudio)
+        {
+            if (streamAudio == null || streamAudio.Length == 0) return false;
+
+            try
+            {                
+                IsolatedStorageFile appStorage = IsolatedStorageFile.GetUserStoreForApplication();
+
+                string audioFileName = noteId + ".wav";
+                
+                if (appStorage.FileExists(audioFileName))
+                {                    
+                    appStorage.DeleteFile(audioFileName);
+                }
+                
+                IsolatedStorageFileStream fileStream = new IsolatedStorageFileStream(audioFileName, FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication());
+
+                fileStream.Write(streamAudio.ToArray(), 0, streamAudio.ToArray().Length);                
+                fileStream.Close();
+
+                return true;
+            }
+            catch { return false; }
+        }
+
+        public void PlayNoteAudio(string audioFileName)
+        {
+            IsolatedStorageFile appStorage = IsolatedStorageFile.GetUserStoreForApplication();
+
+            if (appStorage.FileExists(audioFileName))
+            {
+                IsolatedStorageFileStream file = appStorage.OpenFile(audioFileName, FileMode.Open, FileAccess.Read);
+
+                using (MemoryStream audioStream = new MemoryStream())
+                {
+                    file.CopyTo(audioStream);
+
+                    Microphone microphone = Microphone.Default;
+                    SoundEffect sound = new SoundEffect(audioStream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
+                    sound.Play();
+                }
             }
         }
 

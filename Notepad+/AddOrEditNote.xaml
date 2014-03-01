@@ -116,9 +116,11 @@
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                     <Image Height="50" Source="/Notepad%2b;component/images/Pin.png">
                     </Image>
-                    <TextBox Height="71" Name="txtNoteTitle" Text="New Note" InputScope="Text" Background="#FFB79544" Margin="0,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="SemiBold" Foreground="#FFA11800" Width="342" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Disabled" />
-                    <Image Name="imgReminderClock" Visibility="Collapsed" Height="50" Source="/Notepad%2b;component/images/ReminderClock.png">
+                    <TextBox Height="71" Name="txtNoteTitle" Text="New Note" InputScope="Text" Background="#FFB79544" Margin="0,0,6,-2" BorderBrush="#FFB79544" GotFocus="txtNoteTitle_GotFocus" FontStyle="Normal" FontFamily="Comic Sans MS" FontWeight="SemiBold" Foreground="#FFA11800" Width="293" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Disabled" />
+                    <Image Name="imgAudio" Visibility="Collapsed" Height="50" Tap="imgAudioClock_Tap" Source="/Notepad%2b;component/images/Audio.png">
                     </Image>
+                    <Image Name="imgReminderClock" Visibility="Collapsed" Height="50" Source="/Notepad%2b;component/images/ReminderClock.png">
+                    </Image>                    
                 </StackPanel>
             </Grid>
         </StackPanel>
@@ -145,7 +147,9 @@
             <shell:ApplicationBarIconButton IconUri="images/Delete.png" Text="delete" IsEnabled="False" Click="DeleteNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Cancel.png" Text="cancel" Click="CancelNote_Click"/>
             <shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="reminder" Click="ReminderNote_Click"/>
+            <!--<shell:ApplicationBarIconButton IconUri="images/Reminder.png" Text="Record" Click="ReminderNote1_Click"/>-->
             <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Record note" Click="Record_Click" />
                 <shell:ApplicationBarMenuItem Text="email this note" Click="EmailNote_Click" />
                 <shell:ApplicationBarMenuItem Text="pin to start" Click="PinNoteToStart_Click"/>
                 <shell:ApplicationBarMenuItem Text="share" Click="Share_Click"/>

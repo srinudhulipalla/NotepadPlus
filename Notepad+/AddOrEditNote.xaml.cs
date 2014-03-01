@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using NotepadPlus.Notes;
 using Microsoft.Phone.Shell;
 using Coding4Fun.Toolkit.Controls;
+using System.IO;
+using System.IO.IsolatedStorage;
 
 namespace NotepadPlus
 {
@@ -65,6 +67,18 @@ namespace NotepadPlus
 
                 return _noteManager;
             }            
+        }
+
+        RecordNote _noteRecorder = null;
+        RecordNote NoteRecorder
+        {
+            get
+            {
+                if (_noteRecorder == null)
+                    _noteRecorder = new RecordNote();
+
+                return _noteRecorder;
+            }
         }
 
         public AddOrEditNote()
@@ -178,6 +192,8 @@ namespace NotepadPlus
                 this.CurrentNote.HasReminder = Visibility.Collapsed;
             }
 
+            this.CurrentNote.HasAudio = imgAudio.Visibility;
+
             return this.CurrentNote;
         }
 
@@ -273,6 +289,33 @@ namespace NotepadPlus
             ReminderPopup.Show();
         }
 
+        private void Record_Click(object sender, EventArgs e)
+        {
+            var msgDialog = new MessagePrompt()
+            {
+                Title = "Record",
+                Body = this.NoteRecorder,
+                IsCancelVisible = true,
+                Margin = popupMargin
+            };
+
+            msgDialog.Completed += (s, args) => {
+                if (args.PopUpResult == PopUpResult.Ok)
+                {
+                    bool isSaved = this.NoteManager.SaveNoteAudio(this.CurrentNote.Id, this.NoteRecorder.stream);
+
+                    imgAudio.Visibility = isSaved ? Visibility.Visible : Visibility.Collapsed;
+                }
+            };
+
+            msgDialog.Show();
+        }
+
+        private void imgAudioClock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NoteManager.PlayNoteAudio(this.CurrentNote.Id + ".wav");            
+        }
+
         private void EmailNote_Click(object sender, EventArgs e)
         {
             Common.SendEmail(GetCurrentNote());
@@ -356,11 +399,14 @@ namespace NotepadPlus
             }
 
             imgReminderClock.Visibility = this.CurrentNote.HasReminder;
+            imgAudio.Visibility = this.CurrentNote.HasAudio;
 
             this.ReminderControl.IsReminderEnabled = this.ReminderControl.IsCompleted = (this.CurrentNote.HasReminder == Visibility.Visible) ? true : false;
             this.ReminderControl.Date = this.CurrentNote.ReminderDate;
             this.ReminderControl.Time = this.CurrentNote.ReminderTime;
         }
+
+        
 
     }
 }
