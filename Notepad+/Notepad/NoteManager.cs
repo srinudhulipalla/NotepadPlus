@@ -19,6 +19,7 @@ namespace NotepadPlus.Notes
     public class NoteManager
     {
         private const string noteSortByKey = "note_SortBy";
+        private const string audioExtn = ".wav";
 
         private IsolatedStorageSettings settings { get; set; }
         public List<Note> Notes { get; private set; }
@@ -118,7 +119,7 @@ namespace NotepadPlus.Notes
             {                
                 IsolatedStorageFile appStorage = IsolatedStorageFile.GetUserStoreForApplication();
 
-                string audioFileName = noteId + ".wav";
+                string audioFileName = noteId + audioExtn;
                 
                 if (appStorage.FileExists(audioFileName))
                 {                    
@@ -132,12 +133,24 @@ namespace NotepadPlus.Notes
 
                 return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            { return false; }
         }
 
-        public void PlayNoteAudio(string audioFileName)
+        public void PlayNoteAudio(string noteId)
+        {
+            MemoryStream audioStream = GetNoteAudio(noteId);
+
+            Microphone microphone = Microphone.Default;
+            SoundEffect sound = new SoundEffect(audioStream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
+            sound.Play();
+        }
+
+        public MemoryStream GetNoteAudio(string noteId)
         {
             IsolatedStorageFile appStorage = IsolatedStorageFile.GetUserStoreForApplication();
+
+            string audioFileName = noteId + audioExtn;
 
             if (appStorage.FileExists(audioFileName))
             {
@@ -146,12 +159,10 @@ namespace NotepadPlus.Notes
                 using (MemoryStream audioStream = new MemoryStream())
                 {
                     file.CopyTo(audioStream);
-
-                    Microphone microphone = Microphone.Default;
-                    SoundEffect sound = new SoundEffect(audioStream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
-                    sound.Play();
+                    return audioStream;
                 }
             }
+            else return null;
         }
 
     }

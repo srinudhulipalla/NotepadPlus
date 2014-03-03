@@ -20,11 +20,26 @@ namespace NotepadPlus
     public partial class RecordNote : UserControl, IApplicationService
     {
         DispatcherTimer frameworkDispatcherTimer;
+        MemoryStream _audioStream = new MemoryStream();
 
         Microphone microphone = Microphone.Default;
+        SoundEffect sound;
         byte[] buffer;
-        public MemoryStream stream = new MemoryStream();
-        SoundEffect sound; 
+
+        public MemoryStream AudioStream
+        {
+            get
+            {
+                if (_audioStream == null)
+                    _audioStream = new MemoryStream();
+
+                return _audioStream;
+            }
+            set
+            {                
+                _audioStream = value;
+            }
+        }
 
         public RecordNote()
         {
@@ -48,6 +63,8 @@ namespace NotepadPlus
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+            //AudioStream = new MemoryStream();
+
             microphone.BufferDuration = TimeSpan.FromMilliseconds(1000);
             buffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
             microphone.Start();
@@ -63,21 +80,19 @@ namespace NotepadPlus
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            sound = new SoundEffect(stream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
+            sound = new SoundEffect(AudioStream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
             sound.Play();
         }
 
         void microphone_BufferReady(object sender, EventArgs e)
         {
             microphone.GetData(buffer);
-            stream.Write(buffer, 0, buffer.Length);
+            AudioStream.Write(buffer, 0, buffer.Length);
         }
 
         void frameworkDispatcherTimer_Tick(object sender, EventArgs e) { FrameworkDispatcher.Update(); }
         void IApplicationService.StartService(ApplicationServiceContext context) { this.frameworkDispatcherTimer.Start(); }
-        void IApplicationService.StopService() { this.frameworkDispatcherTimer.Stop(); }
-
-        
+        void IApplicationService.StopService() { this.frameworkDispatcherTimer.Stop(); }        
 
     }
 }

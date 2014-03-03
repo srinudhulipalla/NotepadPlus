@@ -17,10 +17,12 @@ using Microsoft.Phone.Shell;
 using Coding4Fun.Toolkit.Controls;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Windows.Threading;
+using Microsoft.Xna.Framework;
 
 namespace NotepadPlus
 {
-    public partial class AddOrEditNote : PhoneApplicationPage
+    public partial class AddOrEditNote : PhoneApplicationPage, IApplicationService
     {
         string NoteId = string.Empty;
         bool IsReminderSet = true;
@@ -28,6 +30,7 @@ namespace NotepadPlus
         Note EditedNote = null;        
         MessagePrompt ReminderPopup = null;
         Thickness popupMargin = new Thickness(10, 150, 10, 0);
+        DispatcherTimer frameworkDispatcherTimer;
 
         Note _currentNote = null;
         Note CurrentNote
@@ -85,6 +88,12 @@ namespace NotepadPlus
         {
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(AddOrEditNote_Loaded);
+
+            this.frameworkDispatcherTimer = new DispatcherTimer();
+            this.frameworkDispatcherTimer.Interval = TimeSpan.FromTicks(333333);
+            this.frameworkDispatcherTimer.Tick += frameworkDispatcherTimer_Tick;
+            this.frameworkDispatcherTimer.Start();
+            FrameworkDispatcher.Update();
         }
 
         void GotoNotesView()
@@ -291,6 +300,9 @@ namespace NotepadPlus
 
         private void Record_Click(object sender, EventArgs e)
         {
+            this.NoteRecorder.AudioStream = this.NoteManager.GetNoteAudio(this.CurrentNote.Id);
+
+
             var msgDialog = new MessagePrompt()
             {
                 Title = "Record",
@@ -302,7 +314,7 @@ namespace NotepadPlus
             msgDialog.Completed += (s, args) => {
                 if (args.PopUpResult == PopUpResult.Ok)
                 {
-                    bool isSaved = this.NoteManager.SaveNoteAudio(this.CurrentNote.Id, this.NoteRecorder.stream);
+                    bool isSaved = this.NoteManager.SaveNoteAudio(this.CurrentNote.Id, this.NoteRecorder.AudioStream);
 
                     imgAudio.Visibility = isSaved ? Visibility.Visible : Visibility.Collapsed;
                 }
@@ -313,7 +325,7 @@ namespace NotepadPlus
 
         private void imgAudioClock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NoteManager.PlayNoteAudio(this.CurrentNote.Id + ".wav");            
+            this.NoteManager.PlayNoteAudio(this.CurrentNote.Id);            
         }
 
         private void EmailNote_Click(object sender, EventArgs e)
@@ -342,13 +354,13 @@ namespace NotepadPlus
 
         private void txtNoteTitle_GotFocus(object sender, RoutedEventArgs e)
         {
-            txtNoteTitle.Background = new SolidColorBrush(Color.FromArgb(0, 255, 183, 149));
+            txtNoteTitle.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 255, 183, 149));
             txtNoteTitle.BorderThickness = new Thickness(0, 0, 0, 0);
         }
 
         private void txtNoteContent_GotFocus(object sender, RoutedEventArgs e)
         {
-            txtNoteContent.Background = new SolidColorBrush(Color.FromArgb(255, 255, 238, 184));
+            txtNoteContent.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 238, 184));
             txtNoteContent.BorderThickness = new Thickness(0, 0, 0, 0);
         }
 
@@ -406,7 +418,9 @@ namespace NotepadPlus
             this.ReminderControl.Time = this.CurrentNote.ReminderTime;
         }
 
-        
+        void frameworkDispatcherTimer_Tick(object sender, EventArgs e) { FrameworkDispatcher.Update(); }
+        void IApplicationService.StartService(ApplicationServiceContext context) { this.frameworkDispatcherTimer.Start(); }
+        void IApplicationService.StopService() { this.frameworkDispatcherTimer.Stop(); }
 
     }
 }
